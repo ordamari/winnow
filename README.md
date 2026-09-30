@@ -13,6 +13,19 @@ pnpm dev
 
 Copy `apps/web/.env.example` to `apps/web/.env` when a task needs secrets. Keys stay server-only. `NEXT_PUBLIC_SENTRY_DSN` is the one exception: a Sentry DSN is a public project identifier, not a credential. Personal resume JSON (`resume-data.json`) is gitignored; example JSON files can be committed.
 
+## Database
+
+Local Postgres is `docker compose up -d` at the repo root (Postgres 17 with pgvector). Put both URLs from `.env.example` in `apps/web/.env`, then:
+
+```bash
+pnpm db:migrate
+pnpm db:seed
+```
+
+`pnpm db:generate` writes a migration after a schema change. `pnpm db:studio` opens Drizzle Studio.
+
+Preview and production use [Neon](https://neon.tech). Connect the Neon project to the Vercel app so each preview deployment gets a branch database. Set `DATABASE_URL` to the pooled string and `DATABASE_URL_UNPOOLED` to the direct string. Migrations use the direct URL.
+
 ## Checks
 
 `pnpm lint`, `pnpm format:check`, `pnpm typecheck`, `pnpm test`, and `pnpm build` are the local gate. `pnpm test:e2e` builds the app and runs the Playwright smoke test. GitHub Actions runs lint, typecheck, unit tests, and build on every pull request. Playwright runs on pushes to `main`.

@@ -1,0 +1,22 @@
+---
+description: Ship each roadmap task from a fresh branch off latest main, then open a pull request
+alwaysApply: true
+---
+
+# Roadmap task branches
+
+Each task in `docs/roadmap/tasks/` is implemented on its own branch and opened as a pull request into `main`.
+
+Before writing code:
+
+1. `git fetch origin`
+2. Check out `main` and fast-forward to `origin/main` so the branch includes every merged task.
+3. Create `tNN-short-name` from that `main` (for example `t06-database`). Do not stack a new task on an open task branch.
+
+After the task is done:
+
+1. Commit on that branch.
+2. Push and open a pull request into `main`.
+3. Tick the task in `docs/roadmap/README.md` and fill its Decisions log in the same pull request.
+
+Do not commit directly to `main`.

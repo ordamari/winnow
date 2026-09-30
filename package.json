@@ -14,6 +14,10 @@
     "format:check": "prettier --check .",
     "test": "vitest run",
     "test:e2e": "pnpm --filter @winnow/web build && pnpm --filter @winnow/web test:e2e",
+    "db:generate": "pnpm --filter @winnow/web db:generate",
+    "db:migrate": "pnpm --filter @winnow/web db:migrate",
+    "db:studio": "pnpm --filter @winnow/web db:studio",
+    "db:seed": "pnpm --filter @winnow/web db:seed",
     "prepare": "husky"
   },
   "optionalDependencies": {

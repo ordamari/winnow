@@ -13,6 +13,8 @@ export function createWinnowEnv(runtime: RuntimeEnv = process.env) {
       SENTRY_AUTH_TOKEN: z.string().min(1).optional(),
       SENTRY_ORG: z.string().min(1).optional(),
       SENTRY_PROJECT: z.string().min(1).optional(),
+      DATABASE_URL: z.string().min(1).optional(),
+      DATABASE_URL_UNPOOLED: z.string().min(1).optional(),
     },
     client: {
       NEXT_PUBLIC_SENTRY_DSN: requireDsn
@@ -24,6 +26,8 @@ export function createWinnowEnv(runtime: RuntimeEnv = process.env) {
       SENTRY_AUTH_TOKEN: runtime.SENTRY_AUTH_TOKEN,
       SENTRY_ORG: runtime.SENTRY_ORG,
       SENTRY_PROJECT: runtime.SENTRY_PROJECT,
+      DATABASE_URL: runtime.DATABASE_URL,
+      DATABASE_URL_UNPOOLED: runtime.DATABASE_URL_UNPOOLED,
       NEXT_PUBLIC_SENTRY_DSN: runtime.NEXT_PUBLIC_SENTRY_DSN,
     },
     emptyStringAsUndefined: true,
