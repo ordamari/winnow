@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { tailorCatalogSchema } from "./catalog";
+
 export const bulletMatchSchema = z.object({
   matchPercent: z.number(),
   reason: z.string(),
@@ -75,3 +77,35 @@ export const OPENAI_MODELS = [
 ] as const;
 
 export type OpenAIModelId = (typeof OPENAI_MODELS)[number]["id"];
+
+export const openAIModelIdSchema = z.enum(
+  OPENAI_MODELS.map((model) => model.id) as [OpenAIModelId, ...OpenAIModelId[]],
+);
+
+export const JD_MAX_LENGTH = 20_000;
+
+export const tailorRequestSchema = z.object({
+  jobDescription: z.string().trim().min(1).max(JD_MAX_LENGTH),
+  model: openAIModelIdSchema,
+  catalog: tailorCatalogSchema,
+});
+
+export type TailorRequest = z.infer<typeof tailorRequestSchema>;
+
+export type TailorRequestErrorCode =
+  | "empty-jd"
+  | "too-large"
+  | "invalid-model"
+  | "invalid-input";
+
+export function tailorRequestError(error: z.ZodError): TailorRequestErrorCode {
+  for (const issue of error.issues) {
+    if (issue.path[0] !== "jobDescription") continue;
+    if (issue.code === "too_small") return "empty-jd";
+    if (issue.code === "too_big") return "too-large";
+  }
+  for (const issue of error.issues) {
+    if (issue.path[0] === "model") return "invalid-model";
+  }
+  return "invalid-input";
+}

@@ -44,7 +44,7 @@ Size: **S** ≈ 1–2 days, **M** ≈ 3–5 days, **L** ≈ 1–2 weeks (solo, p
 | ☑ | [T02](./tasks/T02-design-system.md) | Design system & app shell | T01 | M |
 | ☐ | [T41](./tasks/T41-command-palette.md) | Command palette | T02 | S |
 | ☐ | [T03](./tasks/T03-port-builder.md) | Port the resume builder into Next.js | T01, T02 | M |
-| ☐ | [T04](./tasks/T04-server-tailor.md) | Move AI Tailor to the server | T03 | S |
+| ☑ | [T04](./tasks/T04-server-tailor.md) | Move AI Tailor to the server | T03 | S |
 | ☐ | [T05](./tasks/T05-quality-ci.md) | Quality tooling, CI & preview deploys | T01 | S |
 
 ### Phase 1: Accounts & bullet bank

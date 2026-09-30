@@ -176,7 +176,11 @@
     "jobDescription": "Job description",
     "jobDescriptionPlaceholder": "Paste the full job posting here…",
     "apply": "Apply to resume",
+    "cancel": "Cancel",
     "tailoring": "Tailoring…",
+    "stagePreparing": "Preparing the catalog…",
+    "stageCalling": "Calling the model…",
+    "stageApplying": "Applying selections…",
     "jdMatch": "JD match",
     "applied": "Applied. Review the JD match below, then tweak item scores on the Content tab.",
     "colors": "Colors",
@@ -214,7 +218,11 @@
       "missingKey": "Missing OPENAI_API_KEY. Add it to .env and restart the dev server.",
       "emptyJd": "Paste a job description first.",
       "noResult": "Model returned no structured result. Try another model.",
-      "unknown": "Something went wrong."
+      "unknown": "Something went wrong.",
+      "invalidInput": "That request could not be read. Check the job description and try again.",
+      "tooLarge": "The job description or catalog is too large.",
+      "rateLimited": "Too many tailor requests. Wait a minute and try again.",
+      "invalidModel": "That model is not available."
     }
   }
 }

@@ -37,4 +37,7 @@ Provider abstraction/BYOK (T21), retrieval (T25).
 
 ## Decisions log
 
-_Fill in after planning._
+- Route Handler `POST /api/tailor` replaces the server action. Cancel uses `AbortController`, and the route forwards `request.signal` to the OpenAI call.
+- No partial structured streaming in this task. The Tailor panel shows preparing, calling, and applying stages plus Cancel. Streaming waits for T21.
+- `OPENAI_MODELS` stays in `@winnow/core`. `tailorRequestSchema` rejects any other model id. Task-to-model routing stays with T21.
+- The prompt and `sanitizeTailorResult` stay unchanged in behavior. The zod model schema and sanitizer stay in `@winnow/core` (the client needs `TailorResult`, and tests should not import `server-only`). The server module keeps the prompt and the API call. Catalog shape checks live in `tailorCatalogSchema`.

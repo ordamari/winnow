@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 import {
   defaultVersionId,
   type ResumeData,
@@ -5,31 +7,48 @@ import {
   type VersionedText,
 } from "../resume/schema";
 
-export interface CatalogVersion {
-  id: string;
-  label: string;
-  text: string;
-}
+const catalogVersionSchema = z.object({
+  id: z.string(),
+  label: z.string(),
+  text: z.string(),
+});
 
-export interface CatalogSlot {
-  id: string;
-  defaultVersionId: string;
-  versions: CatalogVersion[];
-}
+const catalogSlotSchema = z.object({
+  id: z.string(),
+  defaultVersionId: z.string(),
+  versions: z.array(catalogVersionSchema).max(12),
+});
 
-export interface TailorCatalog {
-  summary: CatalogSlot;
-  skills: { id: string; name: string; categoryId: string | null }[];
-  categories: { id: string; label: string }[];
-  experience: {
-    id: string;
-    company: string;
-    allowedTitles: string[];
-    bullets: CatalogSlot[];
-  }[];
-  highlights: CatalogSlot[];
-  currentTitle: string;
-}
+const catalogSkillSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  categoryId: z.string().nullable(),
+});
+
+const catalogCategorySchema = z.object({
+  id: z.string(),
+  label: z.string(),
+});
+
+const catalogExperienceSchema = z.object({
+  id: z.string(),
+  company: z.string(),
+  allowedTitles: z.array(z.string()),
+  bullets: z.array(catalogSlotSchema).max(40),
+});
+
+export const tailorCatalogSchema = z.object({
+  summary: catalogSlotSchema,
+  skills: z.array(catalogSkillSchema).max(200),
+  categories: z.array(catalogCategorySchema).max(40),
+  experience: z.array(catalogExperienceSchema).max(30),
+  highlights: z.array(catalogSlotSchema).max(40),
+  currentTitle: z.string(),
+});
+
+export type CatalogVersion = z.infer<typeof catalogVersionSchema>;
+export type CatalogSlot = z.infer<typeof catalogSlotSchema>;
+export type TailorCatalog = z.infer<typeof tailorCatalogSchema>;
 
 function toCatalogSlot(slot: VersionedText): CatalogSlot {
   return {

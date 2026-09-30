@@ -1,8 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
-import { buildTailorCatalog, OPENAI_MODELS, type OpenAIModelId } from "@winnow/core";
+import { Loader2 } from "lucide-react";
+import {
+  buildTailorCatalog,
+  OPENAI_MODELS,
+  tailorResultSchema,
+  type OpenAIModelId,
+} from "@winnow/core";
 import { Button } from "@winnow/ui/components/button";
 import { Label } from "@winnow/ui/components/label";
 import { MatchPercent } from "@winnow/ui/components/match-percent";
@@ -15,24 +21,61 @@ import {
 } from "@winnow/ui/components/select";
 import { Textarea } from "@winnow/ui/components/textarea";
 
-import { tailorResumeAction, type TailorActionError } from "../actions";
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
 
-const errorKeys: Record<TailorActionError, "errors.missingKey" | "errors.emptyJd" | "errors.noResult" | "errors.unknown"> = {
+const errorKeys = {
   "missing-key": "errors.missingKey",
   "empty-jd": "errors.emptyJd",
   "no-result": "errors.noResult",
   unknown: "errors.unknown",
-};
+  "invalid-input": "errors.invalidInput",
+  "too-large": "errors.tooLarge",
+  "rate-limited": "errors.rateLimited",
+  "invalid-model": "errors.invalidModel",
+} as const;
+
+type TailorApiError = keyof typeof errorKeys;
+
+const stageKeys = {
+  preparing: "stagePreparing",
+  calling: "stageCalling",
+  applying: "stageApplying",
+} as const;
+
+type TailorStage = keyof typeof stageKeys;
+
+function paint(): Promise<void> {
+  return new Promise((resolve) => {
+    requestAnimationFrame(() => resolve());
+  });
+}
+
+function isAbortError(error: unknown): boolean {
+  return error instanceof Error && error.name === "AbortError";
+}
+
+function readErrorCode(payload: unknown): TailorApiError {
+  if (!payload || typeof payload !== "object" || !("error" in payload)) {
+    return "unknown";
+  }
+  const code = payload.error;
+  if (typeof code === "string" && code in errorKeys) {
+    return code as TailorApiError;
+  }
+  return "unknown";
+}
 
 export function TailorPanel({ hasApiKey }: { hasApiKey: boolean }) {
   const t = useTranslations("builder");
   const [model, setModel] = useState<OpenAIModelId>("gpt-5.6-terra");
   const [jobDescription, setJobDescription] = useState("");
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [stage, setStage] = useState<TailorStage | null>(null);
   const [message, setMessage] = useState("");
   const [hideJdMatch, setHideJdMatch] = useState(false);
+  const abortRef = useRef<AbortController | null>(null);
+  const requestId = useRef(0);
   const bank = useBuilderStore((state) => state.bank);
   const selections = useBuilderStore((state) => state.selections);
   const jdMatch = useBuilderStore((state) => state.jdMatch);
@@ -40,26 +83,86 @@ export function TailorPanel({ hasApiKey }: { hasApiKey: boolean }) {
     (state) => state.applyContentSelections
   );
 
+  const resetIfCurrent = (id: number) => {
+    if (requestId.current !== id) return;
+    setStatus("idle");
+    setStage(null);
+    setMessage("");
+  };
+
+  const handleCancel = () => {
+    abortRef.current?.abort();
+  };
+
   const handleApply = async () => {
     if (!bank) return;
+    const id = ++requestId.current;
+    abortRef.current?.abort();
+    const controller = new AbortController();
+    abortRef.current = controller;
     setStatus("loading");
+    setStage("preparing");
     setMessage("");
-    const catalog = buildTailorCatalog(bank, selections);
-    const response = await tailorResumeAction({
-      jobDescription,
-      model,
-      catalog,
-    });
-    if (!response.ok) {
+
+    try {
+      await paint();
+      if (controller.signal.aborted) {
+        resetIfCurrent(id);
+        return;
+      }
+      const catalog = buildTailorCatalog(bank, selections);
+      setStage("calling");
+      const response = await fetch("/api/tailor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ jobDescription, model, catalog }),
+        signal: controller.signal,
+      });
+      if (controller.signal.aborted || requestId.current !== id) {
+        resetIfCurrent(id);
+        return;
+      }
+      const payload: unknown = await response.json().catch(() => null);
+      if (requestId.current !== id) return;
+      if (!response.ok) {
+        setStatus("error");
+        setStage(null);
+        setMessage(t(errorKeys[readErrorCode(payload)]));
+        return;
+      }
+      const parsed = tailorResultSchema.safeParse(payload);
+      if (!parsed.success) {
+        setStatus("error");
+        setStage(null);
+        setMessage(t(errorKeys.unknown));
+        return;
+      }
+      setStage("applying");
+      await paint();
+      if (controller.signal.aborted || requestId.current !== id) {
+        resetIfCurrent(id);
+        return;
+      }
+      applyContentSelections(parsed.data);
+      setHideJdMatch(false);
+      setStatus("success");
+      setStage(null);
+      setMessage(t("applied"));
+    } catch (error) {
+      if (requestId.current !== id) return;
+      if (controller.signal.aborted || isAbortError(error)) {
+        resetIfCurrent(id);
+        return;
+      }
       setStatus("error");
-      setMessage(t(errorKeys[response.error]));
-      return;
+      setStage(null);
+      setMessage(t(errorKeys.unknown));
+    } finally {
+      if (abortRef.current === controller) abortRef.current = null;
     }
-    applyContentSelections(response.result);
-    setHideJdMatch(false);
-    setStatus("success");
-    setMessage(t("applied"));
   };
+
+  const loading = status === "loading";
 
   return (
     <div className="space-y-5">
@@ -83,7 +186,7 @@ export function TailorPanel({ hasApiKey }: { hasApiKey: boolean }) {
           onValueChange={(value) => {
             if (value) setModel(value as OpenAIModelId);
           }}
-          disabled={status === "loading"}
+          disabled={loading}
         >
           <SelectTrigger id="tailor-model" className="w-full">
             <SelectValue />
@@ -112,7 +215,7 @@ export function TailorPanel({ hasApiKey }: { hasApiKey: boolean }) {
           }}
           placeholder={t("jobDescriptionPlaceholder")}
           rows={14}
-          disabled={status === "loading"}
+          disabled={loading}
           className="min-h-44 text-xs leading-relaxed"
           aria-label={t("jobDescription")}
         />
@@ -121,10 +224,10 @@ export function TailorPanel({ hasApiKey }: { hasApiKey: boolean }) {
       <Button
         type="button"
         className="w-full"
-        onClick={handleApply}
-        disabled={status === "loading" || !jobDescription.trim() || !hasApiKey}
+        onClick={loading ? handleCancel : handleApply}
+        disabled={!loading && (!jobDescription.trim() || !hasApiKey)}
       >
-        {status === "loading" ? t("tailoring") : t("apply")}
+        {loading ? t("cancel") : t("apply")}
       </Button>
 
       {jdMatch && !hideJdMatch ? (
@@ -146,17 +249,25 @@ export function TailorPanel({ hasApiKey }: { hasApiKey: boolean }) {
         </section>
       ) : null}
 
-      {message ? (
+      {stage || message ? (
         <p
+          aria-live="polite"
           className={
             status === "error"
               ? "text-xs leading-relaxed text-destructive"
               : status === "success"
                 ? "text-xs leading-relaxed text-emerald-700 dark:text-emerald-400"
-                : "text-xs leading-relaxed text-muted-foreground"
+                : "inline-flex items-center gap-2 text-xs leading-relaxed text-muted-foreground"
           }
         >
-          {message}
+          {stage ? (
+            <>
+              <Loader2 className="size-3.5 animate-spin" aria-hidden />
+              {t(stageKeys[stage])}
+            </>
+          ) : (
+            message
+          )}
         </p>
       ) : null}
     </div>

@@ -33,5 +33,8 @@ Production infra, backups and domains (T38).
 - A thrown test error appears in the monitoring dashboard with a readable stack trace.
 
 ## Decisions log
+- ESLint + Prettier
+- Vercel for now
+
 
 _Fill in after planning._

@@ -10,8 +10,8 @@ import {
 } from "@winnow/core";
 
 /**
- * Temporary home for the tailor call until T04 adds rate limits, streaming,
- * and sanitizer tests around this module.
+ * Server-side tailor call. Request limits live on POST /api/tailor.
+ * Partial structured streaming waits for T21.
  */
 
 export type TailorErrorCode = "missing-key" | "empty-jd" | "no-result";
@@ -92,6 +92,7 @@ export async function tailorResume(options: {
   jobDescription: string;
   model: string;
   catalog: TailorCatalog;
+  signal?: AbortSignal;
 }): Promise<TailorResult> {
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey || typeof apiKey !== "string" || !apiKey.trim()) {
@@ -105,25 +106,28 @@ export async function tailorResume(options: {
 
   const client = new OpenAI({ apiKey });
 
-  const response = await client.responses.parse({
-    model: options.model,
-    input: [
-      { role: "system", content: buildSystemPrompt() },
-      {
-        role: "user",
-        content: [
-          "Job description:",
-          jobDescription,
-          "",
-          "Resume catalog (JSON):",
-          JSON.stringify(options.catalog),
-        ].join("\n"),
+  const response = await client.responses.parse(
+    {
+      model: options.model,
+      input: [
+        { role: "system", content: buildSystemPrompt() },
+        {
+          role: "user",
+          content: [
+            "Job description:",
+            jobDescription,
+            "",
+            "Resume catalog (JSON):",
+            JSON.stringify(options.catalog),
+          ].join("\n"),
+        },
+      ],
+      text: {
+        format: zodTextFormat(tailorModelSchema, "resume_tailor"),
       },
-    ],
-    text: {
-      format: zodTextFormat(tailorModelSchema, "resume_tailor"),
     },
-  });
+    { signal: options.signal },
+  );
 
   const parsed = response.output_parsed;
   if (!parsed) {
