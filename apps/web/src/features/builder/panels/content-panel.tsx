@@ -6,8 +6,7 @@ import { Label } from "@winnow/ui/components/label";
 import { useTranslations } from "next-intl";
 
 import { useBuilderStore } from "../store/builder-store";
-import { ExperienceSection } from "./experience-section";
-import { HighlightsSection } from "./highlights-section";
+import { EntriesSection } from "./entries-section";
 import { PersonalFields } from "./personal-fields";
 import { SectionHeading } from "./section-heading";
 import { SkillsEditor } from "./skills-editor";
@@ -20,6 +19,7 @@ export function ContentPanel() {
   );
   const setTitle = useBuilderStore((state) => state.setTitle);
   const resetContent = useBuilderStore((state) => state.resetContent);
+  const bank = useBuilderStore((state) => state.bank);
 
   return (
     <div className="space-y-6">
@@ -40,10 +40,15 @@ export function ContentPanel() {
           onChange={(event) => setTitle(event.target.value)}
         />
       </section>
-      <SummarySection />
-      <ExperienceSection />
-      <SkillsEditor />
-      <HighlightsSection />
+      {bank?.sections.map((section) => {
+        if (section.kind === "summary") {
+          return <SummarySection key="summary" title={section.title} />;
+        }
+        if (section.kind === "skills") {
+          return <SkillsEditor key="skills" title={section.title} />;
+        }
+        return <EntriesSection key={section.id} section={section} />;
+      })}
     </div>
   );
 }

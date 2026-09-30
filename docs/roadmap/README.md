@@ -54,7 +54,7 @@ Size: **S** ≈ 1–2 days, **M** ≈ 3–5 days, **L** ≈ 1–2 weeks (solo, p
 | --- | --------------------------------------- | ------------------------------------------------------- | ---------- | ---- |
 | ☑   | [T06](./tasks/T06-database.md)          | Database, ORM & migrations (Postgres + pgvector)        | T01        | S    |
 | ☑   | [T07](./tasks/T07-auth.md)              | Authentication & user accounts                          | T06        | M    |
-| ☐   | [T08](./tasks/T08-bank-data-model.md)   | Bullet bank data model & JSON import                    | T06, T07   | M    |
+| ☑   | [T08](./tasks/T08-bank-data-model.md)   | Bullet bank data model & JSON import                    | T06, T07   | M    |
 | ☐   | [T09](./tasks/T09-bank-manager-ui.md)   | Bullet Bank Manager UI                                  | T08, T02   | L    |
 | ☐   | [T10](./tasks/T10-resume-import.md)     | Onboarding: import an existing resume PDF into the bank | T09        | M    |
 | ☐   | [T11](./tasks/T11-style-presets-fit.md) | Style presets & one-page fit assistant                  | T03, T08   | M    |

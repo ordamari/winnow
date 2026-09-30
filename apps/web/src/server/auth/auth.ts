@@ -10,14 +10,7 @@ import { eq } from "drizzle-orm";
 import { env } from "@/env";
 
 import { db } from "../db/client";
-import {
-  account,
-  demoResumes,
-  profiles,
-  session,
-  user,
-  verification,
-} from "../db/schema";
+import { account, profiles, session, user, verification } from "../db/schema";
 import { sendMagicLinkEmail } from "./mailer";
 
 const BUILD_SECRET = "build-time-placeholder-secret-32chars!!";
@@ -90,10 +83,8 @@ export const auth = betterAuth({
       },
       delete: {
         before: async (existing) => {
-          // T36 expands this purge to storage, traces, and vectors.
-          await db
-            .delete(demoResumes)
-            .where(eq(demoResumes.userId, existing.id));
+          // Bank rows cascade from user.id. T36 expands this purge to
+          // storage, traces, and vectors.
           await db.delete(profiles).where(eq(profiles.userId, existing.id));
         },
       },

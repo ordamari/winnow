@@ -43,9 +43,7 @@ function BuilderWorkspace({ hasApiKey }: { hasApiKey: boolean }) {
       title: selections.selectedTitle,
       summary: rendered.selectedSummary,
       skillCategories: rendered.skillCategories,
-      experience: rendered.experience,
-      technicalHighlights: rendered.highlights,
-      education: bank.education,
+      sections: rendered.sections,
       styleOverrides: style,
     };
   }, [bank, personalInfo, selections, style]);

@@ -13,10 +13,8 @@ import {
 } from "@react-pdf/renderer";
 import {
   DEFAULT_STYLE,
-  type Education,
   type PersonalInfo,
-  type RenderedExperience,
-  type RenderedText,
+  type RenderedSection,
   type ResumeStyle,
   type SkillCategoryView,
   type TextVersion,
@@ -250,9 +248,7 @@ export interface ResumePDFProps {
   title: string;
   summary: TextVersion | undefined;
   skillCategories: SkillCategoryView[];
-  experience: RenderedExperience[];
-  technicalHighlights: RenderedText[];
-  education: Education;
+  sections: RenderedSection[];
   styleOverrides?: ResumeStyle;
 }
 
@@ -261,9 +257,7 @@ export function ResumePDF({
   title,
   summary,
   skillCategories,
-  experience,
-  technicalHighlights,
-  education,
+  sections,
   styleOverrides,
 }: ResumePDFProps) {
   const theme = styleOverrides ?? DEFAULT_STYLE;
@@ -316,69 +310,64 @@ export function ResumePDF({
           </View>
         </View>
 
-        {/* Summary */}
-        {summary && (
-          <>
-            <Text style={s.sectionHeader}>Summary</Text>
-            <View style={s.summaryWrap}>
-              <Text style={s.summaryText}>
-                {parseBoldText(summary.text, s.bold)}
-              </Text>
+        {sections.map((section) => {
+          if (section.kind === "summary") {
+            if (!summary) return null;
+            return (
+              <View key={section.id}>
+                <Text style={s.sectionHeader}>{section.title}</Text>
+                <View style={s.summaryWrap}>
+                  <Text style={s.summaryText}>
+                    {parseBoldText(summary.text, s.bold)}
+                  </Text>
+                </View>
+              </View>
+            );
+          }
+
+          if (section.kind === "skills") {
+            return (
+              <View key={section.id}>
+                <Text style={s.sectionHeader}>{section.title}</Text>
+                {skillCategories.map((cat) => (
+                  <View key={cat.id} style={s.skillRow}>
+                    <Text style={s.skillText}>
+                      <Text style={s.skillLabel}>{cat.label}: </Text>
+                      {cat.skills.map((sk) => sk.name).join(", ")}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            );
+          }
+
+          return (
+            <View key={section.id}>
+              <Text style={s.sectionHeader}>{section.title}</Text>
+              {section.entries.map((entry) => {
+                const role = [entry.title, entry.period]
+                  .filter((part) => part && part.length > 0)
+                  .join(" • ");
+                return (
+                  <View key={entry.id}>
+                    {entry.organization ? (
+                      <Text style={s.companyName}>{entry.organization}</Text>
+                    ) : null}
+                    {role ? <Text style={s.roleLine}>{role}</Text> : null}
+                    {entry.bullets.map((bullet) => (
+                      <View key={bullet.id} style={s.bulletRow}>
+                        <Text style={s.bulletDot}>•</Text>
+                        <Text style={s.bulletText}>
+                          {parseBoldText(bullet.text, s.bold)}
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                );
+              })}
             </View>
-          </>
-        )}
-
-        {/* Work Experience */}
-        <Text style={s.sectionHeader}>Work Experience</Text>
-        {experience.map((exp) => (
-          <View key={exp.id}>
-            <Text style={s.companyName}>{exp.company}</Text>
-            <Text style={s.roleLine}>
-              {exp.title} • {exp.period}
-            </Text>
-            {exp.bullets.map((bullet) => (
-              <View key={bullet.id} style={s.bulletRow}>
-                <Text style={s.bulletDot}>•</Text>
-                <Text style={s.bulletText}>
-                  {parseBoldText(bullet.text, s.bold)}
-                </Text>
-              </View>
-            ))}
-          </View>
-        ))}
-
-        {/* Skills */}
-        <Text style={s.sectionHeader}>Skills</Text>
-        {skillCategories.map((cat) => (
-          <View key={cat.id} style={s.skillRow}>
-            <Text style={s.skillText}>
-              <Text style={s.skillLabel}>{cat.label}: </Text>
-              {cat.skills.map((sk) => sk.name).join(", ")}
-            </Text>
-          </View>
-        ))}
-
-        {/* Technical Highlights */}
-        {technicalHighlights.length > 0 && (
-          <>
-            <Text style={s.sectionHeader}>Technical Highlights</Text>
-            {technicalHighlights.map((h) => (
-              <View key={h.id} style={s.bulletRow}>
-                <Text style={s.bulletDot}>•</Text>
-                <Text style={s.bulletText}>
-                  {parseBoldText(h.text, s.bold)}
-                </Text>
-              </View>
-            ))}
-          </>
-        )}
-
-        {/* Education */}
-        <Text style={s.sectionHeader}>Education</Text>
-        <Text style={s.eduInstitution}>{education.institution}</Text>
-        <Text style={s.eduProgram}>
-          {education.program} • {education.period}
-        </Text>
+          );
+        })}
       </Page>
     </Document>
   );

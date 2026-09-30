@@ -205,6 +205,9 @@
     "sectionBorders": "Section header underlines",
     "loadErrorTitle": "Could not load the resume",
     "loadError": "The resume JSON is missing or invalid.",
+    "emptyTitle": "No bullet bank yet",
+    "emptyDescription": "Import a resume JSON file to start building.",
+    "emptyAction": "Import a bank",
     "tabs": {
       "content": "Content",
       "tailor": "Tailor",
@@ -296,5 +299,21 @@
     "cancel": "Cancel",
     "confirm": "Confirm",
     "deleteError": "Could not delete your account."
+  },
+  "bank": {
+    "title": "Bullet bank",
+    "description": "Import or export your resume JSON. This replaces the bank for your account.",
+    "pasteLabel": "Paste JSON",
+    "pastePlaceholder": "Paste resume-data.json",
+    "uploadLabel": "Or upload a file",
+    "invalid": "That JSON does not match the resume format.",
+    "previewTitle": "Ready to import",
+    "jobs": "{count} jobs",
+    "bullets": "{count} bullets",
+    "sections": "{count} sections",
+    "import": "Replace bank",
+    "importing": "Importing…",
+    "saved": "Bank saved.",
+    "export": "Export JSON"
   }
 }

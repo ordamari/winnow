@@ -1,3 +1,2 @@
-/** Stable ids so `db:seed` upserts the same demo row. */
+/** Stable id so `db:seed` upserts the same demo user. */
 export const DEMO_USER_ID = "00000000-0000-4000-8000-000000000001";
-export const DEMO_RESUME_ID = "00000000-0000-4000-8000-000000000002";

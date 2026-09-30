@@ -78,12 +78,37 @@ export function buildTailorCatalog(
       id: category.id,
       label: category.label,
     })),
-    experience: data.experience.map((exp) => ({
-      id: exp.id,
-      company: exp.company,
-      allowedTitles: [exp.title, ...exp.alternativeTitles],
-      bullets: exp.bullets.map(toCatalogSlot),
-    })),
-    highlights: data.technicalHighlights.map(toCatalogSlot),
+    experience: data.sections.flatMap((section) => {
+      if (section.kind !== "entries") return [];
+      return section.entries.flatMap((entry) => {
+        if (!entry.bullets?.length) return [];
+        const title = entry.title ?? "";
+        const allowedTitles = [
+          title,
+          ...(entry.alternativeTitles ?? []),
+        ].filter((item) => item.length > 0);
+        return [
+          {
+            id: entry.id,
+            company: entry.organization ?? "",
+            allowedTitles,
+            bullets: entry.bullets.map(toCatalogSlot),
+          },
+        ];
+      });
+    }),
+    highlights: data.sections.flatMap((section) => {
+      if (section.kind !== "entries") return [];
+      return section.entries.flatMap((entry) => {
+        if (entry.bullets?.length || !entry.versions?.length) return [];
+        return [
+          toCatalogSlot({
+            id: entry.id,
+            defaultChecked: entry.defaultChecked,
+            versions: entry.versions,
+          }),
+        ];
+      });
+    }),
   };
 }

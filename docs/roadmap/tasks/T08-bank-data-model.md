@@ -38,4 +38,10 @@ Editing UI (T09), embeddings (T24).
 
 ## Decisions log
 
-_Fill in after planning._
+- **Storage:** Fully normalized tables. One live bank per user. Postgres uuid primary keys. JSON string ids are stored as `public_id` and stay the ids the builder, selections, and tailor catalog use.
+- **One bank.** Fullstack vs backend wording stays as versions of the same bullet. No bank switcher.
+- **Sections:** Experience, education, highlights, courses, volunteer, and side projects are `entries` sections with one entry shape. `period` is optional. Summary and skills stay their own payloads and are ordered sections (`kind: summary | skills`) so the PDF can place them. Default order is Summary, Work Experience, Skills, Technical Highlights, Education.
+- **JSON:** Canonical `sections` array. Import still accepts a legacy file (`experience`, an education object or array, `technicalHighlights`). Export writes the canonical shape. A highlight slot uses the entry id, so existing selection ids stay stable.
+- **Ownership:** `requireUser()` on the builder and bank pages. Every read and write uses `ownedBy()`. `banks.user_id` references `user.id` and cascades on account deletion. The demo user is only the seed fixture.
+- **`demo_resumes`:** Dropped. Account deletion no longer deletes that table; the bank cascade covers it.
+- **Skill:** The Vite `resume-data` skill stays with that app. In Winnow the zod schema is the JSON contract and the database is the source of truth.

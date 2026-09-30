@@ -1,7 +1,13 @@
+import { PageHeader } from "@winnow/ui/components/page-header";
 import { getTranslations } from "next-intl/server";
 
-import { PlaceholderPage } from "@/components/placeholder-page";
+import { BankImport } from "@/features/bank/bank-import";
 import { setupLocale } from "@/i18n/locale";
+import { requireUser } from "@/server/auth/session";
+import { loadBankForUser } from "@/server/bank/store";
+import { db } from "@/server/db/client";
+
+export const dynamic = "force-dynamic";
 
 export default async function BankPage({
   params,
@@ -10,6 +16,14 @@ export default async function BankPage({
 }) {
   const { locale } = await params;
   setupLocale(locale);
-  const t = await getTranslations("nav");
-  return <PlaceholderPage title={t("bank")} />;
+  const current = await requireUser();
+  const t = await getTranslations("bank");
+  const bank = await loadBankForUser(db, current.user.id);
+
+  return (
+    <>
+      <PageHeader title={t("title")} description={t("description")} />
+      <BankImport hasBank={bank !== null} />
+    </>
+  );
 }

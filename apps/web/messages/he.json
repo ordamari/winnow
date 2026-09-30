@@ -205,6 +205,9 @@
     "sectionBorders": "קו תחתון לכותרות מקטע",
     "loadErrorTitle": "לא הצלחנו לטעון את קורות החיים",
     "loadError": "קובץ ה-JSON חסר או לא תקין.",
+    "emptyTitle": "עדיין אין בנק תבליטים",
+    "emptyDescription": "ייבאו קובץ JSON של קורות חיים כדי להתחיל.",
+    "emptyAction": "ייבוא בנק",
     "tabs": {
       "content": "תוכן",
       "tailor": "התאמה",
@@ -296,5 +299,21 @@
     "cancel": "ביטול",
     "confirm": "אישור",
     "deleteError": "לא הצלחנו למחוק את החשבון."
+  },
+  "bank": {
+    "title": "בנק תבליטים",
+    "description": "ייבאו או ייצאו את קובץ ה-JSON. הייבוא מחליף את הבנק של החשבון.",
+    "pasteLabel": "הדבקת JSON",
+    "pastePlaceholder": "הדביקו את resume-data.json",
+    "uploadLabel": "או העלאת קובץ",
+    "invalid": "ה-JSON לא תואם את מבנה קורות החיים.",
+    "previewTitle": "מוכן לייבוא",
+    "jobs": "{count} משרות",
+    "bullets": "{count} תבליטים",
+    "sections": "{count} מקטעים",
+    "import": "החלפת הבנק",
+    "importing": "מייבאים…",
+    "saved": "הבנק נשמר.",
+    "export": "ייצוא JSON"
   }
 }
