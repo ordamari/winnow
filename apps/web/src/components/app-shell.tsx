@@ -6,11 +6,13 @@ import { TopBar } from "@/components/top-bar"
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="h-svh overflow-hidden">
       <AppSidebar />
-      <SidebarInset id="main" className="min-h-svh">
+      <SidebarInset id="main" className="min-h-0 overflow-hidden">
         <TopBar />
-        <div className="flex flex-1 flex-col p-4 text-sm md:p-6">{children}</div>
+        <div className="flex min-h-0 flex-1 flex-col overflow-auto p-4 text-sm md:p-6">
+          {children}
+        </div>
       </SidebarInset>
     </SidebarProvider>
   )
