@@ -17,7 +17,8 @@ Each task lives in its own file under [`tasks/`](./tasks) and is written to be p
    implementation plan with the files to create/change and how to verify it.
    ```
 
-3. After implementing, tick the task in the table and add any decisions you made to the task file's **Decisions log** so later tasks inherit them.
+3. Implement on a branch cut from the latest `main` (`tNN-short-name`). Fetch and fast-forward `main` first. Do not stack the next task on an open branch.
+4. Open a pull request into `main`. In that PR, tick the task in the table and add any decisions to the task file's **Decisions log** so later tasks inherit them.
 
 ## Product principles (apply to every task)
 
@@ -51,7 +52,7 @@ Size: **S** ≈ 1–2 days, **M** ≈ 3–5 days, **L** ≈ 1–2 weeks (solo, p
 
 | ✓   | ID                                      | Task                                                    | Depends on | Size |
 | --- | --------------------------------------- | ------------------------------------------------------- | ---------- | ---- |
-| ☐   | [T06](./tasks/T06-database.md)          | Database, ORM & migrations (Postgres + pgvector)        | T01        | S    |
+| ☑   | [T06](./tasks/T06-database.md)          | Database, ORM & migrations (Postgres + pgvector)        | T01        | S    |
 | ☐   | [T07](./tasks/T07-auth.md)              | Authentication & user accounts                          | T06        | M    |
 | ☐   | [T08](./tasks/T08-bank-data-model.md)   | Bullet bank data model & JSON import                    | T06, T07   | M    |
 | ☐   | [T09](./tasks/T09-bank-manager-ui.md)   | Bullet Bank Manager UI                                  | T08, T02   | L    |

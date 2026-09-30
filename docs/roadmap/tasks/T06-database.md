@@ -34,4 +34,9 @@ Actual domain tables (T08, T12), auth tables (T07).
 
 ## Decisions log
 
-_Fill in after planning._
+- **Provider:** Neon for preview and production. The Vercel integration branches a database per preview deployment. Local dev is Docker Compose (`pgvector/pgvector:pg17`). CI uses the same image as a throwaway service. `DATABASE_URL` is the pooled app URL; `DATABASE_URL_UNPOOLED` is the direct URL for migrations. Locally they are the same.
+- **ORM:** Drizzle with `postgres` (postgres.js). `prepare: false` for Neon’s pooler, `max: 1` for serverless, singleton in dev.
+- **Ownership:** App layer only. Every user-owned table has `user_id`. Live rows have `deleted_at` null. No RLS.
+- **IDs:** Postgres `uuid` via `gen_random_uuid()`.
+- **Files:** PDFs are not stored. T13 regenerates them from the immutable snapshot (selections and style). A renderer version can live on that row later if a visual change needs explaining.
+- **Seed table:** `demo_resumes` holds the example JSON for a fixed demo user. T08 drops it when the normalized bank exists.
