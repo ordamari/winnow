@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "title": "Winnow",
+    "description": "Winnow, פלטפורמה לחיפוש עבודה"
+  },
+  "nav": {
+    "main": "ראשי",
+    "wordmark": "Winnow",
+    "builder": "בונה",
+    "bank": "מאגר",
+    "applications": "מועמדויות",
+    "recommendations": "המלצות",
+    "insights": "תובנות",
+    "settings": "הגדרות"
+  },
+  "shell": {
+    "skipToContent": "דלג לתוכן",
+    "search": "חיפוש",
+    "searchComingSoon": "חיפוש, בקרוב",
+    "toggleSidebar": "פתיחה וסגירה של סרגל הצד",
+    "sidebarTitle": "סרגל צד",
+    "sidebarDescription": "מציג את סרגל הצד במסכים קטנים.",
+    "close": "סגירה"
+  },
+  "account": {
+    "menu": "תפריט חשבון",
+    "you": "את/ה",
+    "theme": "ערכת נושא",
+    "light": "בהיר",
+    "dark": "כהה",
+    "system": "לפי המערכת",
+    "language": "שפה",
+    "signOut": "התנתקות",
+    "locales": {
+      "en": "English",
+      "he": "עברית"
+    }
+  },
+  "placeholder": {
+    "title": "עדיין אין כאן כלום",
+    "description": "המסך הזה יגיע במשימה מאוחרת יותר."
+  },
+  "error": {
+    "title": "משהו השתבש",
+    "description": "לא הצלחנו לטעון את המסך הזה.",
+    "retry": "נסו שוב"
+  },
+  "design": {
+    "title": "עיצוב",
+    "description": "רכיבי הבסיס בערכת הנושא הנוכחית. החליפו ערכת נושא כדי לבדוק את שתיהן.",
+    "light": "בהיר",
+    "dark": "כהה",
+    "system": "לפי המערכת",
+    "sections": {
+      "buttons": "כפתורים",
+      "badges": "תגים וסטטוס",
+      "match": "אחוז התאמה",
+      "form": "טופס",
+      "table": "טבלת נתונים",
+      "feedback": "משוב",
+      "card": "כרטיס",
+      "formats": "תאריכים ומספרים"
+    },
+    "buttons": {
+      "primary": "ראשי",
+      "secondary": "משני",
+      "outline": "קו מתאר",
+      "ghost": "שקוף",
+      "destructive": "הרסני",
+      "link": "קישור",
+      "disabled": "מושבת"
+    },
+    "badges": {
+      "default": "ברירת מחדל",
+      "secondary": "משני",
+      "outline": "קו מתאר",
+      "destructive": "הרסני"
+    },
+    "match": {
+      "label": "התאמה",
+      "strong": "התאמה גבוהה לתפקיד",
+      "partial": "התאמה חלקית",
+      "weak": "התאמה חלשה"
+    },
+    "form": {
+      "company": "חברה",
+      "companyRequired": "יש להזין שם חברה",
+      "companySaved": "החברה נשמרה",
+      "notes": "הערות",
+      "notesPlaceholder": "הערה אופציונלית",
+      "followUp": "תזכורת למעקב",
+      "stage": "שלב",
+      "saved": "נשמר",
+      "applied": "הוגש",
+      "screening": "סינון",
+      "save": "שמירה"
+    },
+    "table": {
+      "company": "חברה",
+      "role": "תפקיד",
+      "status": "סטטוס",
+      "sampleCompany": "Northwind",
+      "sampleRole": "מהנדס מוצר",
+      "empty": "אין תוצאות"
+    },
+    "feedback": {
+      "emptyTitle": "עדיין אין מועמדויות",
+      "emptyDescription": "המסך הזה יגיע במשימה מאוחרת יותר.",
+      "addOne": "הוספה",
+      "retryClicked": "ניסיון חוזר",
+      "saved": "נשמר",
+      "showToast": "הצגת הודעה",
+      "openConfirm": "פתיחת דיאלוג אישור",
+      "hoverTip": "רחפו להצגת טיפ",
+      "tooltip": "תוכן הטיפ",
+      "archiveTitle": "לארכב את המועמדות?",
+      "archiveDescription": "אפשר לשחזר אותה אחר כך מהארכיון.",
+      "archive": "ארכוב",
+      "cancel": "ביטול",
+      "archived": "הועבר לארכיון"
+    },
+    "card": {
+      "title": "מועמדות",
+      "description": "משטח קומפקטי למסכים הבאים.",
+      "body": "תוכן הכרטיס"
+    },
+    "formats": {
+      "dateLabel": "תאריך",
+      "numberLabel": "מספר"
+    },
+    "statuses": {
+      "saved": "נשמר",
+      "applied": "הוגש",
+      "screening": "סינון",
+      "technical": "טכני",
+      "homeAssignment": "מטלת בית",
+      "final": "גמר",
+      "offer": "הצעה",
+      "accepted": "התקבל",
+      "rejected": "נדחה",
+      "ghosted": "ללא מענה",
+      "withdrawn": "בוטל"
+    }
+  }
+}

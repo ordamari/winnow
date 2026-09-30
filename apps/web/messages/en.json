@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "title": "Winnow",
+    "description": "Winnow job-search platform"
+  },
+  "nav": {
+    "main": "Main",
+    "wordmark": "Winnow",
+    "builder": "Builder",
+    "bank": "Bank",
+    "applications": "Applications",
+    "recommendations": "Recommendations",
+    "insights": "Insights",
+    "settings": "Settings"
+  },
+  "shell": {
+    "skipToContent": "Skip to content",
+    "search": "Search",
+    "searchComingSoon": "Search, coming soon",
+    "toggleSidebar": "Toggle Sidebar",
+    "sidebarTitle": "Sidebar",
+    "sidebarDescription": "Displays the mobile sidebar.",
+    "close": "Close"
+  },
+  "account": {
+    "menu": "Account menu",
+    "you": "You",
+    "theme": "Theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "language": "Language",
+    "signOut": "Sign out",
+    "locales": {
+      "en": "English",
+      "he": "עברית"
+    }
+  },
+  "placeholder": {
+    "title": "Nothing here yet",
+    "description": "This screen arrives in a later task."
+  },
+  "error": {
+    "title": "Something went wrong",
+    "description": "This screen could not be loaded.",
+    "retry": "Try again"
+  },
+  "design": {
+    "title": "Design",
+    "description": "Primitives in the current theme. Switch themes to check both.",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "sections": {
+      "buttons": "Buttons",
+      "badges": "Badges and status",
+      "match": "Match percent",
+      "form": "Form",
+      "table": "Data table",
+      "feedback": "Feedback",
+      "card": "Card",
+      "formats": "Dates and numbers"
+    },
+    "buttons": {
+      "primary": "Primary",
+      "secondary": "Secondary",
+      "outline": "Outline",
+      "ghost": "Ghost",
+      "destructive": "Destructive",
+      "link": "Link",
+      "disabled": "Disabled"
+    },
+    "badges": {
+      "default": "Default",
+      "secondary": "Secondary",
+      "outline": "Outline",
+      "destructive": "Destructive"
+    },
+    "match": {
+      "label": "Match",
+      "strong": "Strong overlap with the role",
+      "partial": "Partial overlap",
+      "weak": "Weak overlap"
+    },
+    "form": {
+      "company": "Company",
+      "companyRequired": "Company is required",
+      "companySaved": "Company saved",
+      "notes": "Notes",
+      "notesPlaceholder": "Optional note",
+      "followUp": "Remind me to follow up",
+      "stage": "Stage",
+      "saved": "Saved",
+      "applied": "Applied",
+      "screening": "Screening",
+      "save": "Save"
+    },
+    "table": {
+      "company": "Company",
+      "role": "Role",
+      "status": "Status",
+      "sampleCompany": "Northwind",
+      "sampleRole": "Product engineer",
+      "empty": "No results"
+    },
+    "feedback": {
+      "emptyTitle": "No applications yet",
+      "emptyDescription": "This screen arrives in a later task.",
+      "addOne": "Add one",
+      "retryClicked": "Retry clicked",
+      "saved": "Saved",
+      "showToast": "Show toast",
+      "openConfirm": "Open confirm dialog",
+      "hoverTip": "Hover tip",
+      "tooltip": "Tooltip content",
+      "archiveTitle": "Archive this application?",
+      "archiveDescription": "You can restore it later from the archive.",
+      "archive": "Archive",
+      "cancel": "Cancel",
+      "archived": "Archived"
+    },
+    "card": {
+      "title": "Application",
+      "description": "A compact surface for later screens.",
+      "body": "Card body"
+    },
+    "formats": {
+      "dateLabel": "Date",
+      "numberLabel": "Number"
+    },
+    "statuses": {
+      "saved": "Saved",
+      "applied": "Applied",
+      "screening": "Screening",
+      "technical": "Technical",
+      "homeAssignment": "Home assignment",
+      "final": "Final",
+      "offer": "Offer",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "ghosted": "Ghosted",
+      "withdrawn": "Withdrawn"
+    }
+  }
+}

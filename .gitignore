@@ -1,0 +1,41 @@
+# Dependencies
+node_modules
+
+# Next.js
+.next
+out
+
+# Build
+dist
+dist-ssr
+
+# Env (API keys)
+.env
+.env.*
+!.env.example
+
+# Personal resume content (example JSON stays committable)
+**/resume-data.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor and OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts

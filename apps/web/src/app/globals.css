@@ -1,0 +1,5 @@
+@import "tailwindcss";
+@import "shadcn/tailwind.css";
+@import "@winnow/ui/globals.css";
+@source "../";
+@source "../../../../packages/ui/src";

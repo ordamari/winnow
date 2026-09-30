@@ -1,0 +1,13 @@
+{
+  "name": "winnow",
+  "private": true,
+  "packageManager": "pnpm@10.6.3",
+  "scripts": {
+    "dev": "pnpm --filter @winnow/web dev",
+    "build": "pnpm --filter @winnow/web build",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "optionalDependencies": {
+    "@swc/core-win32-x64-msvc": "1.16.13"
+  }
+}
