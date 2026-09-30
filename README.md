@@ -13,6 +13,8 @@ pnpm dev
 
 Copy `apps/web/.env.example` to `apps/web/.env` when a task needs secrets. Keys stay server-only. `NEXT_PUBLIC_SENTRY_DSN` is the one exception: a Sentry DSN is a public project identifier, not a credential. Personal resume JSON (`resume-data.json`) is gitignored; example JSON files can be committed.
 
+Sign-in needs `BETTER_AUTH_SECRET` (at least 32 characters) and `BETTER_AUTH_URL` (for local dev, `http://localhost:3000`). Google and GitHub are optional. Without `RESEND_API_KEY`, magic links are printed in the dev server log. Production must set `RESEND_API_KEY` and `EMAIL_FROM`.
+
 ## Database
 
 Local Postgres is `docker compose up -d` at the repo root (Postgres 17 with pgvector). Put both URLs from `.env.example` in `apps/web/.env`, then:

@@ -18,8 +18,9 @@ import { useTheme } from "next-themes";
 
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
+import { authClient } from "@/lib/auth-client";
 
-export function UserMenu() {
+export function UserMenu({ userName }: { userName: string }) {
   const { theme, setTheme } = useTheme();
   const locale = useLocale();
   const pathname = usePathname();
@@ -32,13 +33,13 @@ export function UserMenu() {
         render={<Button variant="ghost" size="sm" aria-label={t("menu")} />}
       >
         <Avatar size="sm">
-          <AvatarFallback>Y</AvatarFallback>
+          <AvatarFallback>{userName.slice(0, 1).toUpperCase()}</AvatarFallback>
         </Avatar>
-        <span className="hidden sm:inline">{t("you")}</span>
+        <span className="hidden sm:inline">{userName}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuGroup>
-          <DropdownMenuLabel>{t("you")}</DropdownMenuLabel>
+          <DropdownMenuLabel>{userName}</DropdownMenuLabel>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
@@ -78,7 +79,18 @@ export function UserMenu() {
           </DropdownMenuRadioGroup>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem disabled>{t("signOut")}</DropdownMenuItem>
+        <DropdownMenuItem onClick={() => router.push("/settings")}>
+          {t("settings")}
+        </DropdownMenuItem>
+        <DropdownMenuItem
+          onClick={() => {
+            void authClient.signOut().then(() => {
+              router.replace("/sign-in");
+            });
+          }}
+        >
+          {t("signOut")}
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );

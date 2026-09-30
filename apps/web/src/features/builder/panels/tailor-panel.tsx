@@ -33,6 +33,7 @@ const errorKeys = {
   "too-large": "errors.tooLarge",
   "rate-limited": "errors.rateLimited",
   "invalid-model": "errors.invalidModel",
+  unauthorized: "errors.unauthorized",
 } as const;
 
 type TailorApiError = keyof typeof errorKeys;

@@ -6,7 +6,7 @@ export function id() {
   return uuid("id").primaryKey().defaultRandom();
 }
 
-/** Present on every user-owned table. No foreign key until T07 adds users. */
+/** Present on every user-owned table. Call sites add the foreign key to `user.id`. */
 export function userId() {
   return uuid("user_id").notNull();
 }

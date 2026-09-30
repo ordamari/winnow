@@ -33,4 +33,8 @@ Billing plans (T33/T34), admin roles (T37) beyond a simple `role` column.
 
 ## Decisions log
 
-_Fill in after planning._
+- **Library:** Better Auth on the T06 Postgres database, through `@better-auth/drizzle-adapter` and the pooled Drizzle client. User ids are UUIDs. SQL columns are snake_case; Drizzle property names stay the camelCase names Better Auth expects.
+- **Providers:** Google, GitHub, and email magic link. Passkeys are deferred. OAuth buttons stay hidden until that provider's client id and secret are set. Magic links go through Resend when `RESEND_API_KEY` is set, are logged in development, and are stored for Playwright when `E2E_TEST=1`.
+- **Extension:** The browser keeps an httpOnly session cookie. Settings can mint a one-time code (3 minutes, stored hashed in `verification`). `POST /api/extension/session` exchanges it for a new session token that expires in one hour. `requireUser()` accepts that token as `Authorization: Bearer`. The extension client stays in T27.
+- **Ownership:** App layer only. `requireUser()` guards `(app)` routes. `assertOwner()` and `ownedBy()` are the shared checks. No RLS.
+- **Delete:** Deleting an account revokes its sessions and, in `user.delete.before`, removes that user's profile and demo resume rows. T36 extends that hook to storage, traces, and vectors.
