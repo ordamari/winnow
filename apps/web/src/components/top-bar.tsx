@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { SearchButton } from "@/components/search-button";
 import { UserMenu } from "@/components/user-menu";
 
-export function TopBar() {
+export function TopBar({ userName }: { userName: string }) {
   const t = useTranslations("shell");
 
   return (
@@ -12,7 +12,7 @@ export function TopBar() {
       <SidebarTrigger label={t("toggleSidebar")} />
       <SearchButton />
       <div className="ms-auto">
-        <UserMenu />
+        <UserMenu userName={userName} />
       </div>
     </header>
   );

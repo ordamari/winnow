@@ -4,6 +4,7 @@ import { APIUserAbortError } from "openai";
 
 import { clientIp, takeTailorSlot } from "@/server/ai/rate-limit";
 import { TailorError, tailorResume } from "@/server/ai/tailor";
+import { getUser } from "@/server/auth/session";
 
 const TAILOR_BODY_MAX_BYTES = 400 * 1024;
 
@@ -12,6 +13,9 @@ function errorJson(error: string, status: number) {
 }
 
 export async function POST(request: Request) {
+  const current = await getUser();
+  if (!current) return errorJson("unauthorized", 401);
+
   if (!takeTailorSlot(clientIp(request.headers))) {
     return errorJson("rate-limited", 429);
   }
