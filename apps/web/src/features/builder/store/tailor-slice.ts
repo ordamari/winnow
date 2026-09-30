@@ -1,13 +1,13 @@
-import type { StateCreator } from "zustand"
-import type { BulletMatch } from "@winnow/core"
+import type { BulletMatch } from "@winnow/core";
+import type { StateCreator } from "zustand";
 
-import type { BuilderStore } from "./builder-store"
+import type { BuilderStore } from "./builder-store";
 
 export type TailorSlice = {
-  bulletMatches: Record<string, BulletMatch>
-  highlightMatches: Record<string, BulletMatch>
-  jdMatch: BulletMatch | null
-}
+  bulletMatches: Record<string, BulletMatch>;
+  highlightMatches: Record<string, BulletMatch>;
+  jdMatch: BulletMatch | null;
+};
 
 export const createTailorSlice: StateCreator<
   BuilderStore,
@@ -18,4 +18,4 @@ export const createTailorSlice: StateCreator<
   bulletMatches: {},
   highlightMatches: {},
   jdMatch: null,
-})
+});

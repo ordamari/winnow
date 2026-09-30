@@ -4,7 +4,7 @@
 
 ## Goal
 
-A measurably better tailor: grounded in the structured JD analysis and semantic retrieval, explaining *which requirement* each selected bullet covers, still selecting only from the bank.
+A measurably better tailor: grounded in the structured JD analysis and semantic retrieval, explaining _which requirement_ each selected bullet covers, still selecting only from the bank.
 
 ## Scope
 
@@ -26,7 +26,7 @@ Missing-requirement UX (T26).
 ## Decisions (resolve in Plan mode)
 
 - LangGraph vs. plain orchestrated functions.
-- Retrieval as a hard pre-filter vs. a hint (the whole bank still fits in context for most users, so retrieval may be better used for *coverage mapping* than pruning).
+- Retrieval as a hard pre-filter vs. a hint (the whole bank still fits in context for most users, so retrieval may be better used for _coverage mapping_ than pruning).
 - Model choice per step.
 
 ## Acceptance criteria

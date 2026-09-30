@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import type { ResumeStyle } from "@winnow/core";
 import { Button } from "@winnow/ui/components/button";
 import { Checkbox } from "@winnow/ui/components/checkbox";
@@ -13,12 +12,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@winnow/ui/components/select";
+import { useTranslations } from "next-intl";
 
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
 import { StyleNumberField } from "./style-number-field";
 
-const fontOptions: { value: ResumeStyle["fontFamily"]; label: "helvetica" | "times" | "courier" }[] = [
+const fontOptions: {
+  value: ResumeStyle["fontFamily"];
+  label: "helvetica" | "times" | "courier";
+}[] = [
   { value: "Helvetica", label: "helvetica" },
   { value: "Times-Roman", label: "times" },
   { value: "Courier", label: "courier" },
@@ -41,7 +44,10 @@ export function StylePanel() {
       <section>
         <SectionHeading>{t("colors")}</SectionHeading>
         <div className="flex items-center justify-between">
-          <Label htmlFor="accent-color" className="text-xs text-muted-foreground">
+          <Label
+            htmlFor="accent-color"
+            className="text-xs text-muted-foreground"
+          >
             {t("accentColor")}
           </Label>
           <div className="flex items-center gap-2">
@@ -49,7 +55,9 @@ export function StylePanel() {
               id="accent-color"
               type="color"
               value={style.accentColor}
-              onChange={(event) => updateStyle("accentColor", event.target.value)}
+              onChange={(event) =>
+                updateStyle("accentColor", event.target.value)
+              }
               className="h-8 w-14 cursor-pointer p-1"
             />
             <span className="font-mono text-xs text-muted-foreground">
@@ -62,11 +70,17 @@ export function StylePanel() {
       <section className="space-y-3">
         <SectionHeading>{t("typography")}</SectionHeading>
         <div className="flex items-center justify-between gap-2">
-          <Label className="text-xs text-muted-foreground">{t("fontFamily")}</Label>
+          <Label className="text-xs text-muted-foreground">
+            {t("fontFamily")}
+          </Label>
           <Select
             value={style.fontFamily}
             onValueChange={(value) => {
-              if (value === "Helvetica" || value === "Times-Roman" || value === "Courier") {
+              if (
+                value === "Helvetica" ||
+                value === "Times-Roman" ||
+                value === "Courier"
+              ) {
                 updateStyle("fontFamily", value);
               }
             }}
@@ -179,9 +193,14 @@ export function StylePanel() {
           <Checkbox
             id="section-borders"
             checked={style.showSectionBorders}
-            onCheckedChange={(checked) => updateStyle("showSectionBorders", checked)}
+            onCheckedChange={(checked) =>
+              updateStyle("showSectionBorders", checked)
+            }
           />
-          <Label htmlFor="section-borders" className="text-xs font-normal text-muted-foreground">
+          <Label
+            htmlFor="section-borders"
+            className="text-xs font-normal text-muted-foreground"
+          >
             {t("sectionBorders")}
           </Label>
         </div>

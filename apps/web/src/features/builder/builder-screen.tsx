@@ -1,11 +1,11 @@
 "use client";
 
-import { useLayoutEffect, useMemo, useState } from "react";
-import { useTranslations } from "next-intl";
-import { cn } from "cn";
 import { renderResume, type ResumeData } from "@winnow/core";
 import { Button } from "@winnow/ui/components/button";
 import { Skeleton } from "@winnow/ui/components/skeleton";
+import { cn } from "cn";
+import { useTranslations } from "next-intl";
+import { useMemo, useState } from "react";
 
 import { ControlPanel } from "./panels/control-panel";
 import { resumeFileName } from "./pdf/file-name";
@@ -20,17 +20,8 @@ export function BuilderScreen({
   data: ResumeData;
   hasApiKey: boolean;
 }) {
-  const [ready, setReady] = useState(false);
-
-  useLayoutEffect(() => {
-    if (useBuilderStore.getState().bank === null) {
-      useBuilderStore.getState().hydrate(data);
-    }
-    setReady(true);
-  }, [data]);
-
-  if (!ready) {
-    return <BuilderSkeleton />;
+  if (useBuilderStore.getState().bank === null) {
+    useBuilderStore.getState().hydrate(data);
   }
 
   return <BuilderWorkspace hasApiKey={hasApiKey} />;
@@ -102,7 +93,7 @@ function BuilderWorkspace({ hasApiKey }: { hasApiKey: boolean }) {
         <aside
           className={cn(
             "min-h-0 w-full flex-col border-e lg:flex lg:w-96 lg:shrink-0",
-            pane === "preview" ? "hidden lg:flex" : "flex"
+            pane === "preview" ? "hidden lg:flex" : "flex",
           )}
         >
           <ControlPanel hasApiKey={hasApiKey} />
@@ -111,7 +102,7 @@ function BuilderWorkspace({ hasApiKey }: { hasApiKey: boolean }) {
           dir="ltr"
           className={cn(
             "min-h-0 min-w-0 flex-1 bg-muted/40 p-4",
-            pane === "edit" ? "hidden lg:block" : "block"
+            pane === "edit" ? "hidden lg:block" : "block",
           )}
         >
           <ResumePdfPreview documentProps={previewProps} />

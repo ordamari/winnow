@@ -97,10 +97,7 @@ function outputFor(catalog: TailorCatalog): TailorModelOutput {
   };
 }
 
-function enabledIds(
-  flags: Record<string, boolean>,
-  ids: string[],
-): string[] {
+function enabledIds(flags: Record<string, boolean>, ids: string[]): string[] {
   return ids.filter((id) => flags[id]);
 }
 
@@ -140,7 +137,9 @@ describe("sanitizeTailorResult", () => {
     expect(result.enabledBullets.b3).toBe(false);
     expect(result.enabledHighlights["h-omitted"]).toBe(false);
     expect(result.enabledHighlights.h1).toBe(false);
-    expect(Object.keys(result.enabledSkills)).toEqual(skills.map((item) => item.id));
+    expect(Object.keys(result.enabledSkills)).toEqual(
+      skills.map((item) => item.id),
+    );
   });
 
   it("falls back to catalog versions, titles, and categories", () => {
@@ -180,7 +179,9 @@ describe("sanitizeTailorResult", () => {
 
   it("enables the first bullets in catalog order up to the per-role floor", () => {
     const catalog = catalogWith({
-      skills: Array.from({ length: 12 }, (_, index) => skill(`s${index}`, "cat")),
+      skills: Array.from({ length: 12 }, (_, index) =>
+        skill(`s${index}`, "cat"),
+      ),
       categories: [{ id: "cat", label: "Cat" }],
       extraBullets: [slot("solo")],
     });
@@ -203,7 +204,9 @@ describe("sanitizeTailorResult", () => {
         skill("a3", "cat-a"),
         skill("b1", "cat-b"),
         skill("b2", "cat-b"),
-        ...Array.from({ length: 12 }, (_, index) => skill(`c${index}`, "cat-c")),
+        ...Array.from({ length: 12 }, (_, index) =>
+          skill(`c${index}`, "cat-c"),
+        ),
       ],
       categories: [
         { id: "cat-a", label: "A" },
@@ -246,7 +249,12 @@ describe("sanitizeTailorResult", () => {
 
     const result = sanitizeTailorResult(raw, catalog);
 
-    expect(enabledIds(result.enabledSkills, catalog.skills.map((item) => item.id))).toEqual([
+    expect(
+      enabledIds(
+        result.enabledSkills,
+        catalog.skills.map((item) => item.id),
+      ),
+    ).toEqual([
       "a0",
       "a1",
       "a2",

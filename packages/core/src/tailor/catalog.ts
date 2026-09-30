@@ -64,7 +64,7 @@ function toCatalogSlot(slot: VersionedText): CatalogSlot {
 
 export function buildTailorCatalog(
   data: ResumeData,
-  selections: ResumeSelections
+  selections: ResumeSelections,
 ): TailorCatalog {
   return {
     currentTitle: selections.selectedTitle,

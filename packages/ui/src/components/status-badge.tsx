@@ -1,5 +1,5 @@
-import { Badge } from "@winnow/ui/components/badge"
-import { cn } from "cn"
+import { Badge } from "@winnow/ui/components/badge";
+import { cn } from "cn";
 
 export const applicationStatuses = [
   "saved",
@@ -13,9 +13,9 @@ export const applicationStatuses = [
   "rejected",
   "ghosted",
   "withdrawn",
-] as const
+] as const;
 
-export type ApplicationStatus = (typeof applicationStatuses)[number]
+export type ApplicationStatus = (typeof applicationStatuses)[number];
 
 const labels: Record<ApplicationStatus, string> = {
   saved: "Saved",
@@ -29,7 +29,7 @@ const labels: Record<ApplicationStatus, string> = {
   rejected: "Rejected",
   ghosted: "Ghosted",
   withdrawn: "Withdrawn",
-}
+};
 
 const tones: Record<ApplicationStatus, string> = {
   saved: "border-transparent bg-muted text-muted-foreground",
@@ -48,18 +48,18 @@ const tones: Record<ApplicationStatus, string> = {
   rejected: "border-transparent bg-muted text-muted-foreground",
   ghosted: "border-transparent bg-muted text-muted-foreground",
   withdrawn: "border-transparent bg-muted text-muted-foreground",
-}
+};
 
 export function StatusBadge({
   status,
   label,
 }: {
-  status: ApplicationStatus
-  label?: string
+  status: ApplicationStatus;
+  label?: string;
 }) {
   return (
     <Badge variant="outline" className={cn(tones[status])}>
       {label ?? labels[status]}
     </Badge>
-  )
+  );
 }

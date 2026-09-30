@@ -1,13 +1,10 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { useTranslations } from "next-intl";
-import { Loader2 } from "lucide-react";
 import {
   buildTailorCatalog,
   OPENAI_MODELS,
-  tailorResultSchema,
   type OpenAIModelId,
+  tailorResultSchema,
 } from "@winnow/core";
 import { Button } from "@winnow/ui/components/button";
 import { Label } from "@winnow/ui/components/label";
@@ -20,6 +17,9 @@ import {
   SelectValue,
 } from "@winnow/ui/components/select";
 import { Textarea } from "@winnow/ui/components/textarea";
+import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useRef, useState } from "react";
 
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
@@ -70,7 +70,9 @@ export function TailorPanel({ hasApiKey }: { hasApiKey: boolean }) {
   const t = useTranslations("builder");
   const [model, setModel] = useState<OpenAIModelId>("gpt-5.6-terra");
   const [jobDescription, setJobDescription] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<
+    "idle" | "loading" | "success" | "error"
+  >("idle");
   const [stage, setStage] = useState<TailorStage | null>(null);
   const [message, setMessage] = useState("");
   const [hideJdMatch, setHideJdMatch] = useState(false);
@@ -80,7 +82,7 @@ export function TailorPanel({ hasApiKey }: { hasApiKey: boolean }) {
   const selections = useBuilderStore((state) => state.selections);
   const jdMatch = useBuilderStore((state) => state.jdMatch);
   const applyContentSelections = useBuilderStore(
-    (state) => state.applyContentSelections
+    (state) => state.applyContentSelections,
   );
 
   const resetIfCurrent = (id: number) => {

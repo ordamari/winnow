@@ -64,9 +64,7 @@ describe("tailorRequestSchema", () => {
   });
 
   it("rejects a model that is not on the allowlist", () => {
-    const parsed = tailorRequestSchema.safeParse(
-      request({ model: "gpt-99" }),
-    );
+    const parsed = tailorRequestSchema.safeParse(request({ model: "gpt-99" }));
     expect(parsed.success).toBe(false);
     if (!parsed.success) {
       expect(tailorRequestError(parsed.error)).toBe("invalid-model");

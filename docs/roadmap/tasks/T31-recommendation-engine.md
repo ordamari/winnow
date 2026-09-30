@@ -9,7 +9,7 @@
 ## Scope
 
 - **v1, semantic match:** for each fresh pool job, score candidates by requirement coverage against their bank (reuse T24 coverage matrix), weighting must-haves, seniority fit, location/work-mode prefs.
-- **v2, success-weighted re-ranking (your core idea):** find past *successful* signals whose job vectors are similar to the new job; if the candidate's profile/bullets are similar to what succeeded there, boost the score. Explain it: "Profiles like yours got interviews at 6 similar roles."
+- **v2, success-weighted re-ranking (your core idea):** find past _successful_ signals whose job vectors are similar to the new job; if the candidate's profile/bullets are similar to what succeeded there, boost the score. Explain it: "Profiles like yours got interviews at 6 similar roles."
 - Cold-start handling: v1 alone until enough signals exist; show confidence level.
 - Candidate preferences: target titles, locations, remote, salary floor, excluded companies (e.g. current employer).
 - Exclude jobs already applied to / dismissed.

@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { ScrollArea } from "@winnow/ui/components/scroll-area";
 import {
   Tabs,
@@ -8,6 +7,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@winnow/ui/components/tabs";
+import { useTranslations } from "next-intl";
 
 import { ContentPanel } from "./content-panel";
 import { StylePanel } from "./style-panel";
@@ -29,21 +29,33 @@ export function ControlPanel({ hasApiKey }: { hasApiKey: boolean }) {
           </TabsTrigger>
         ))}
       </TabsList>
-      <TabsContent value="content" keepMounted className="min-h-0 overflow-hidden">
+      <TabsContent
+        value="content"
+        keepMounted
+        className="min-h-0 overflow-hidden"
+      >
         <ScrollArea className="h-full">
           <div className="p-4">
             <ContentPanel />
           </div>
         </ScrollArea>
       </TabsContent>
-      <TabsContent value="tailor" keepMounted className="min-h-0 overflow-hidden">
+      <TabsContent
+        value="tailor"
+        keepMounted
+        className="min-h-0 overflow-hidden"
+      >
         <ScrollArea className="h-full">
           <div className="p-4">
             <TailorPanel hasApiKey={hasApiKey} />
           </div>
         </ScrollArea>
       </TabsContent>
-      <TabsContent value="style" keepMounted className="min-h-0 overflow-hidden">
+      <TabsContent
+        value="style"
+        keepMounted
+        className="min-h-0 overflow-hidden"
+      >
         <ScrollArea className="h-full">
           <div className="p-4">
             <StylePanel />

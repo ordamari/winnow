@@ -1,9 +1,9 @@
+import { tailorRequestError, tailorRequestSchema } from "@winnow/core";
 import { NextResponse } from "next/server";
 import { APIUserAbortError } from "openai";
-import { tailorRequestError, tailorRequestSchema } from "@winnow/core";
 
-import { TailorError, tailorResume } from "@/server/ai/tailor";
 import { clientIp, takeTailorSlot } from "@/server/ai/rate-limit";
+import { TailorError, tailorResume } from "@/server/ai/tailor";
 
 const TAILOR_BODY_MAX_BYTES = 400 * 1024;
 
@@ -51,7 +51,11 @@ export async function POST(request: Request) {
     }
     if (error instanceof TailorError) {
       const status =
-        error.code === "no-result" ? 502 : error.code === "empty-jd" ? 400 : 500;
+        error.code === "no-result"
+          ? 502
+          : error.code === "empty-jd"
+            ? 400
+            : 500;
       return errorJson(error.code, status);
     }
     return errorJson("unknown", 500);

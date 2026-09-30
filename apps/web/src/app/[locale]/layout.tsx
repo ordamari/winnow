@@ -1,17 +1,17 @@
-import type { ReactNode } from "react";
+import "../globals.css";
+
+import { Toaster } from "@winnow/ui/components/sonner";
+import { TooltipProvider } from "@winnow/ui/components/tooltip";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Heebo } from "next/font/google";
+import { notFound } from "next/navigation";
 import { hasLocale } from "next-intl";
 import { NextIntlClientProvider } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { notFound } from "next/navigation";
-import { TooltipProvider } from "@winnow/ui/components/tooltip";
-import { Toaster } from "@winnow/ui/components/sonner";
+import type { ReactNode } from "react";
 
 import { ThemeProvider } from "@/components/theme-provider";
 import { routing } from "@/i18n/routing";
-
-import "../globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

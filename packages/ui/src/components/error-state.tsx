@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { Button } from "@winnow/ui/components/button"
+import { Button } from "@winnow/ui/components/button";
 
 export function ErrorState({
   title = "Something went wrong",
@@ -8,10 +8,10 @@ export function ErrorState({
   retryLabel = "Try again",
   onRetry,
 }: {
-  title?: string
-  description?: string
-  retryLabel?: string
-  onRetry?: () => void
+  title?: string;
+  description?: string;
+  retryLabel?: string;
+  onRetry?: () => void;
 }) {
   return (
     <div
@@ -28,5 +28,5 @@ export function ErrorState({
         </Button>
       ) : null}
     </div>
-  )
+  );
 }

@@ -13,9 +13,15 @@ dist-ssr
 .env
 .env.*
 !.env.example
+.env.sentry-build-plugin
 
 # Personal resume content (example JSON stays committable)
 **/resume-data.json
+
+# Tests
+test-results
+playwright-report
+blob-report
 
 # Logs
 logs

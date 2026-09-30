@@ -1,13 +1,13 @@
 import "server-only";
 
-import OpenAI from "openai";
-import { zodTextFormat } from "openai/helpers/zod";
 import {
   sanitizeTailorResult,
-  tailorModelSchema,
   type TailorCatalog,
+  tailorModelSchema,
   type TailorResult,
 } from "@winnow/core";
+import OpenAI from "openai";
+import { zodTextFormat } from "openai/helpers/zod";
 
 /**
  * Server-side tailor call. Request limits live on POST /api/tailor.

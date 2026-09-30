@@ -1,8 +1,8 @@
-import type { ReactNode } from "react"
-import { SidebarInset, SidebarProvider } from "@winnow/ui/components/sidebar"
+import { SidebarInset, SidebarProvider } from "@winnow/ui/components/sidebar";
+import type { ReactNode } from "react";
 
-import { AppSidebar } from "@/components/app-sidebar"
-import { TopBar } from "@/components/top-bar"
+import { AppSidebar } from "@/components/app-sidebar";
+import { TopBar } from "@/components/top-bar";
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
@@ -15,5 +15,5 @@ export function AppShell({ children }: { children: ReactNode }) {
         </div>
       </SidebarInset>
     </SidebarProvider>
-  )
+  );
 }

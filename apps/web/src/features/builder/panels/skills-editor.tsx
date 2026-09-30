@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-import { useTranslations } from "next-intl";
 import { Button } from "@winnow/ui/components/button";
 import { Checkbox } from "@winnow/ui/components/checkbox";
 import { Input } from "@winnow/ui/components/input";
@@ -12,6 +10,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@winnow/ui/components/select";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
 
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
@@ -25,11 +25,9 @@ export function SkillsEditor() {
   const addCategory = useBuilderStore((state) => state.addCategory);
   const removeCategory = useBuilderStore((state) => state.removeCategory);
   const renameCategory = useBuilderStore((state) => state.renameCategory);
-  const toggleSkill = useBuilderStore((state) => state.toggleSkill);
-  const assignSkill = useBuilderStore((state) => state.assignSkill);
 
   const unassigned = selections.skillList.filter(
-    (skill) => !selections.skillCategoryId[skill.id]
+    (skill) => !selections.skillCategoryId[skill.id],
   );
 
   const commitCategory = () => {
@@ -77,7 +75,12 @@ export function SkillsEditor() {
             }
           }}
         />
-        <Button type="button" variant="ghost" size="xs" onClick={commitCategory}>
+        <Button
+          type="button"
+          variant="ghost"
+          size="xs"
+          onClick={commitCategory}
+        >
           {t("add")}
         </Button>
       </div>
@@ -85,7 +88,7 @@ export function SkillsEditor() {
       <SectionHeading>{t("skills")}</SectionHeading>
       {selections.categoryList.map((category) => {
         const skills = selections.skillList.filter(
-          (skill) => selections.skillCategoryId[skill.id] === category.id
+          (skill) => selections.skillCategoryId[skill.id] === category.id,
         );
         if (skills.length === 0) return null;
         return (
@@ -120,10 +123,10 @@ export function SkillsEditor() {
 function SkillRow({ skillId, name }: { skillId: string; name: string }) {
   const t = useTranslations("builder");
   const enabled = useBuilderStore(
-    (state) => state.selections.enabledSkills[skillId] ?? false
+    (state) => state.selections.enabledSkills[skillId] ?? false,
   );
   const categoryId = useBuilderStore(
-    (state) => state.selections.skillCategoryId[skillId] ?? ""
+    (state) => state.selections.skillCategoryId[skillId] ?? "",
   );
   const categories = useBuilderStore((state) => state.selections.categoryList);
   const toggleSkill = useBuilderStore((state) => state.toggleSkill);
@@ -136,7 +139,10 @@ function SkillRow({ skillId, name }: { skillId: string; name: string }) {
         onCheckedChange={() => toggleSkill(skillId)}
         aria-label={name}
       />
-      <span className="min-w-0 flex-1 truncate text-xs text-muted-foreground" title={name}>
+      <span
+        className="min-w-0 flex-1 truncate text-xs text-muted-foreground"
+        title={name}
+      >
         {name}
       </span>
       <Select

@@ -1,20 +1,21 @@
 "use client";
 
-import { useEffect } from "react";
-import { useTranslations } from "next-intl";
+import * as Sentry from "@sentry/nextjs";
 import { ErrorState } from "@winnow/ui/components/error-state";
+import { useTranslations } from "next-intl";
+import { useEffect } from "react";
 
 export default function AppError({
   error,
-  retry,
+  reset,
 }: {
   error: Error & { digest?: string };
-  retry: () => void;
+  reset: () => void;
 }) {
   const t = useTranslations("error");
 
   useEffect(() => {
-    console.error(error);
+    Sentry.captureException(error);
   }, [error]);
 
   return (
@@ -22,7 +23,7 @@ export default function AppError({
       title={t("title")}
       description={t("description")}
       retryLabel={t("retry")}
-      onRetry={retry}
+      onRetry={reset}
     />
   );
 }

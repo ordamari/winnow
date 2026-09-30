@@ -4,7 +4,7 @@
 
 ## Goal
 
-A dashboard better than your Google Sheet, so tracking is something users *want* to do.
+A dashboard better than your Google Sheet, so tracking is something users _want_ to do.
 
 ## Scope
 

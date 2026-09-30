@@ -1,16 +1,15 @@
 "use client";
 
-import { useMemo } from "react";
 import {
   Document,
+  Font,
+  Link,
   Page,
+  Path,
+  StyleSheet,
+  Svg,
   Text,
   View,
-  StyleSheet,
-  Link,
-  Svg,
-  Path,
-  Font,
 } from "@react-pdf/renderer";
 import {
   DEFAULT_STYLE,
@@ -22,6 +21,7 @@ import {
   type SkillCategoryView,
   type TextVersion,
 } from "@winnow/core";
+import { useMemo } from "react";
 
 Font.registerHyphenationCallback((word) => [word]);
 
@@ -153,7 +153,16 @@ function buildStyles(t: ResumeStyle) {
 
 function PhoneIcon({ color }: { color: string }) {
   return (
-    <Svg viewBox="0 0 24 24" style={{ width: 7, height: 7, marginRight: 4, position: "relative" as const, top: -1.5 }}>
+    <Svg
+      viewBox="0 0 24 24"
+      style={{
+        width: 7,
+        height: 7,
+        marginRight: 4,
+        position: "relative" as const,
+        top: -1.5,
+      }}
+    >
       <Path
         d="M6.62 10.79a15.05 15.05 0 006.59 6.59l2.2-2.2a1 1 0 011.01-.24 11.36 11.36 0 003.58.57 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.5a1 1 0 011 1 11.36 11.36 0 00.57 3.58 1 1 0 01-.25 1.01l-2.2 2.2z"
         fill={color}
@@ -164,7 +173,16 @@ function PhoneIcon({ color }: { color: string }) {
 
 function MailIcon({ color }: { color: string }) {
   return (
-    <Svg viewBox="0 0 24 24" style={{ width: 7, height: 7, marginRight: 4, position: "relative" as const, top: -1.5 }}>
+    <Svg
+      viewBox="0 0 24 24"
+      style={{
+        width: 7,
+        height: 7,
+        marginRight: 4,
+        position: "relative" as const,
+        top: -1.5,
+      }}
+    >
       <Path
         d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"
         fill={color}
@@ -175,7 +193,16 @@ function MailIcon({ color }: { color: string }) {
 
 function LinkedInIcon({ color }: { color: string }) {
   return (
-    <Svg viewBox="0 0 24 24" style={{ width: 7, height: 7, marginRight: 4, position: "relative" as const, top: -1.5 }}>
+    <Svg
+      viewBox="0 0 24 24"
+      style={{
+        width: 7,
+        height: 7,
+        marginRight: 4,
+        position: "relative" as const,
+        top: -1.5,
+      }}
+    >
       <Path
         d="M19 3a2 2 0 012 2v14a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h14m-.5 15.5v-5.3a3.26 3.26 0 00-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 011.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 001.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 00-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"
         fill={color}
@@ -186,7 +213,16 @@ function LinkedInIcon({ color }: { color: string }) {
 
 function GitHubIcon({ color }: { color: string }) {
   return (
-    <Svg viewBox="0 0 24 24" style={{ width: 7, height: 7, marginRight: 4, position: "relative" as const, top: -1.5 }}>
+    <Svg
+      viewBox="0 0 24 24"
+      style={{
+        width: 7,
+        height: 7,
+        marginRight: 4,
+        position: "relative" as const,
+        top: -1.5,
+      }}
+    >
       <Path
         d="M12 2A10 10 0 002 12c0 4.42 2.87 8.17 6.84 9.5.5.08.66-.23.66-.5v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.87 1.52 2.34 1.07 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.92 0-1.11.38-2 1.03-2.71-.1-.25-.45-1.29.1-2.64 0 0 .84-.27 2.75 1.02.79-.22 1.65-.33 2.5-.33.85 0 1.71.11 2.5.33 1.91-1.29 2.75-1.02 2.75-1.02.55 1.35.2 2.39.1 2.64.65.71 1.03 1.6 1.03 2.71 0 3.82-2.34 4.66-4.57 4.91.36.31.69.92.69 1.85V21c0 .27.16.59.67.5A10.01 10.01 0 0022 12 10 10 0 0012 2z"
         fill={color}
@@ -237,7 +273,6 @@ export function ResumePDF({
   return (
     <Document>
       <Page size="A4" style={s.page}>
-
         {/* Header */}
         <View style={s.headerRow}>
           <View>
@@ -247,7 +282,10 @@ export function ResumePDF({
           <View style={s.contactCol}>
             <View style={s.contactRow}>
               <PhoneIcon color={iconColor} />
-              <Link src={`tel:${personalInfo.phone.replace(/-/g, "")}`} style={s.contactLink}>
+              <Link
+                src={`tel:${personalInfo.phone.replace(/-/g, "")}`}
+                style={s.contactLink}
+              >
                 {personalInfo.phone}
               </Link>
             </View>
@@ -283,7 +321,9 @@ export function ResumePDF({
           <>
             <Text style={s.sectionHeader}>Summary</Text>
             <View style={s.summaryWrap}>
-              <Text style={s.summaryText}>{parseBoldText(summary.text, s.bold)}</Text>
+              <Text style={s.summaryText}>
+                {parseBoldText(summary.text, s.bold)}
+              </Text>
             </View>
           </>
         )}
@@ -299,7 +339,9 @@ export function ResumePDF({
             {exp.bullets.map((bullet) => (
               <View key={bullet.id} style={s.bulletRow}>
                 <Text style={s.bulletDot}>•</Text>
-                <Text style={s.bulletText}>{parseBoldText(bullet.text, s.bold)}</Text>
+                <Text style={s.bulletText}>
+                  {parseBoldText(bullet.text, s.bold)}
+                </Text>
               </View>
             ))}
           </View>
@@ -323,7 +365,9 @@ export function ResumePDF({
             {technicalHighlights.map((h) => (
               <View key={h.id} style={s.bulletRow}>
                 <Text style={s.bulletDot}>•</Text>
-                <Text style={s.bulletText}>{parseBoldText(h.text, s.bold)}</Text>
+                <Text style={s.bulletText}>
+                  {parseBoldText(h.text, s.bold)}
+                </Text>
               </View>
             ))}
           </>

@@ -1,10 +1,10 @@
 import {
   defaultVersionId,
-  selectedVersion,
   type RenderedExperience,
   type RenderedText,
   type ResumeData,
   type ResumeSelections,
+  selectedVersion,
   type SkillCategoryView,
   type TextVersion,
   type VersionedText,
@@ -12,7 +12,7 @@ import {
 
 function renderSlot(
   slot: VersionedText,
-  selectedVersionById: Record<string, string>
+  selectedVersionById: Record<string, string>,
 ): RenderedText {
   return {
     id: slot.id,
@@ -72,11 +72,11 @@ export interface RenderedResume {
 
 export function renderResume(
   data: ResumeData,
-  selections: ResumeSelections
+  selections: ResumeSelections,
 ): RenderedResume {
   const selectedSummary = selectedVersion(
     data.summary,
-    selections.selectedVersionById[data.summary.id]
+    selections.selectedVersionById[data.summary.id],
   );
 
   const skillCategories = selections.categoryList
@@ -85,7 +85,7 @@ export function renderResume(
       skills: selections.skillList.filter(
         (skill) =>
           selections.skillCategoryId[skill.id] === category.id &&
-          selections.enabledSkills[skill.id]
+          selections.enabledSkills[skill.id],
       ),
     }))
     .filter((category) => category.skills.length > 0);

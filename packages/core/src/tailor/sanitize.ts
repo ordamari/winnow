@@ -3,7 +3,7 @@ import type { BulletMatch, TailorModelOutput, TailorResult } from "./schema";
 
 function toBoolMap(
   items: { id: string; enabled: boolean }[],
-  knownIds: string[]
+  knownIds: string[],
 ): Record<string, boolean> {
   const byId = new Map(items.map((item) => [item.id, item.enabled]));
   const result: Record<string, boolean> = {};
@@ -15,7 +15,7 @@ function toBoolMap(
 
 function toMatchMap(
   items: { id: string; matchPercent: number; reason: string }[],
-  knownIds: string[]
+  knownIds: string[],
 ): Record<string, BulletMatch> {
   const byId = new Map(items.map((item) => [item.id, item]));
   const result: Record<string, BulletMatch> = {};
@@ -36,7 +36,7 @@ function toMatchMap(
 
 function toVersionMap(
   items: { id: string; versionId: string }[],
-  slots: CatalogSlot[]
+  slots: CatalogSlot[],
 ): Record<string, string> {
   const byId = new Map(items.map((item) => [item.id, item.versionId]));
   const result: Record<string, string> = {};
@@ -66,13 +66,15 @@ function sanitizeJdMatch(raw: {
 
 export function sanitizeTailorResult(
   raw: TailorModelOutput,
-  catalog: TailorCatalog
+  catalog: TailorCatalog,
 ): TailorResult {
   const skillIds = catalog.skills.map((skill) => skill.id);
   const bulletSlots = catalog.experience.flatMap((exp) => exp.bullets);
   const bulletIds = bulletSlots.map((bullet) => bullet.id);
   const highlightIds = catalog.highlights.map((highlight) => highlight.id);
-  const categoryIds = new Set(catalog.categories.map((category) => category.id));
+  const categoryIds = new Set(
+    catalog.categories.map((category) => category.id),
+  );
 
   const selectedVersionById = toVersionMap(raw.selectedVersions, [
     catalog.summary,
@@ -82,7 +84,9 @@ export function sanitizeTailorResult(
 
   const experienceTitles: Record<string, string> = {};
   for (const exp of catalog.experience) {
-    const fromAi = raw.experienceTitles.find((title) => title.id === exp.id)?.title;
+    const fromAi = raw.experienceTitles.find(
+      (title) => title.id === exp.id,
+    )?.title;
     experienceTitles[exp.id] = exp.allowedTitles.includes(fromAi ?? "")
       ? (fromAi as string)
       : exp.allowedTitles[0];
@@ -90,7 +94,7 @@ export function sanitizeTailorResult(
 
   const skillCategoryId: Record<string, string | null> = {};
   const bySkill = new Map(
-    raw.skillCategoryId.map((skill) => [skill.id, skill.categoryId])
+    raw.skillCategoryId.map((skill) => [skill.id, skill.categoryId]),
   );
   for (const skill of catalog.skills) {
     const assigned = bySkill.get(skill.id);
@@ -130,11 +134,11 @@ export function sanitizeTailorResult(
   const MIN_PER_POPULATED_CATEGORY = 2;
   for (const category of catalog.categories) {
     const inCategory = catalog.skills.filter(
-      (skill) => skillCategoryId[skill.id] === category.id
+      (skill) => skillCategoryId[skill.id] === category.id,
     );
     if (inCategory.length === 0) continue;
     let enabledInCategory = inCategory.filter(
-      (skill) => enabledSkills[skill.id]
+      (skill) => enabledSkills[skill.id],
     ).length;
     if (enabledInCategory === 0) continue;
     const floor = Math.min(MIN_PER_POPULATED_CATEGORY, inCategory.length);
@@ -156,14 +160,16 @@ export function sanitizeTailorResult(
       catalog.skills
         .filter((skill) => enabledSkills[skill.id])
         .map((skill) => skillCategoryId[skill.id])
-        .filter((id): id is string => id != null)
+        .filter((id): id is string => id != null),
     );
     const refillOrder = [
       ...catalog.skills.filter(
         (skill) =>
           !enabledSkills[skill.id] &&
           skill.categoryId != null &&
-          populatedCategories.has(skillCategoryId[skill.id] ?? skill.categoryId)
+          populatedCategories.has(
+            skillCategoryId[skill.id] ?? skill.categoryId,
+          ),
       ),
       ...catalog.skills.filter((skill) => !enabledSkills[skill.id]),
     ];

@@ -4,7 +4,7 @@
 
 ## Goal
 
-A production-quality public face that explains the differentiator: *AI that only picks from bullets you wrote*, plus a tracker and matches.
+A production-quality public face that explains the differentiator: _AI that only picks from bullets you wrote_, plus a tracker and matches.
 
 ## Scope
 

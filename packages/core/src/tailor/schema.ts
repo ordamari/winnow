@@ -93,10 +93,7 @@ export const tailorRequestSchema = z.object({
 export type TailorRequest = z.infer<typeof tailorRequestSchema>;
 
 export type TailorRequestErrorCode =
-  | "empty-jd"
-  | "too-large"
-  | "invalid-model"
-  | "invalid-input";
+  "empty-jd" | "too-large" | "invalid-model" | "invalid-input";
 
 export function tailorRequestError(error: z.ZodError): TailorRequestErrorCode {
   for (const issue of error.issues) {

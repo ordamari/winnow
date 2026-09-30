@@ -1,11 +1,11 @@
 "use client";
 
-import { useTranslations } from "next-intl";
-import { cn } from "cn";
 import type { BulletMatch, TextVersion, VersionedText } from "@winnow/core";
 import { Checkbox } from "@winnow/ui/components/checkbox";
 import { Label } from "@winnow/ui/components/label";
 import { MatchPercent } from "@winnow/ui/components/match-percent";
+import { cn } from "cn";
+import { useTranslations } from "next-intl";
 
 function plainText(text: string) {
   return text.replace(/\*\*/g, "");
@@ -28,7 +28,7 @@ function VersionChoice({
         "flex cursor-pointer items-start gap-2 rounded-lg border p-2",
         selected
           ? "border-primary bg-primary/5"
-          : "border-border hover:border-ring"
+          : "border-border hover:border-ring",
       )}
     >
       <input

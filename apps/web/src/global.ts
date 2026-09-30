@@ -1,5 +1,4 @@
 import messages from "../messages/en.json";
-
 import { routing } from "./i18n/routing";
 
 declare module "next-intl" {

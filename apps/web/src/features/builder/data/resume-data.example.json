@@ -227,10 +227,7 @@
       "id": "northwind",
       "company": "Northwind Labs",
       "title": "Frontend Developer",
-      "alternativeTitles": [
-        "Software Engineer",
-        "Frontend Engineer"
-      ],
+      "alternativeTitles": ["Software Engineer", "Frontend Engineer"],
       "period": "MAR 2024 - PRESENT",
       "bullets": [
         {
@@ -293,10 +290,7 @@
       "id": "harbor",
       "company": "Harbor Digital",
       "title": "Full Stack Developer",
-      "alternativeTitles": [
-        "Frontend Developer",
-        "Software Engineer"
-      ],
+      "alternativeTitles": ["Frontend Developer", "Software Engineer"],
       "period": "JUN 2022 - FEB 2024",
       "bullets": [
         {

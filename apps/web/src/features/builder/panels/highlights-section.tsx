@@ -10,10 +10,10 @@ export function HighlightsSection() {
   const t = useTranslations("builder");
   const bank = useBuilderStore((state) => state.bank);
   const enabledHighlights = useBuilderStore(
-    (state) => state.selections.enabledHighlights
+    (state) => state.selections.enabledHighlights,
   );
   const selectedVersionById = useBuilderStore(
-    (state) => state.selections.selectedVersionById
+    (state) => state.selections.selectedVersionById,
   );
   const highlightMatches = useBuilderStore((state) => state.highlightMatches);
   const toggleHighlight = useBuilderStore((state) => state.toggleHighlight);

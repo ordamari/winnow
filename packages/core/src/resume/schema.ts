@@ -149,7 +149,7 @@ export function defaultVersionId(slot: VersionedText): string {
 
 export function selectedVersion(
   slot: VersionedText,
-  selectedId: string | undefined
+  selectedId: string | undefined,
 ): TextVersion | undefined {
   return (
     slot.versions.find((version) => version.id === selectedId) ??

@@ -1,16 +1,16 @@
-import type { StateCreator } from "zustand"
-import { DEFAULT_STYLE, type ResumeStyle } from "@winnow/core"
+import { DEFAULT_STYLE, type ResumeStyle } from "@winnow/core";
+import type { StateCreator } from "zustand";
 
-import type { BuilderStore } from "./builder-store"
+import type { BuilderStore } from "./builder-store";
 
 export type StyleSlice = {
-  style: ResumeStyle
+  style: ResumeStyle;
   updateStyle: <K extends keyof ResumeStyle>(
     key: K,
-    value: ResumeStyle[K]
-  ) => void
-  resetStyle: () => void
-}
+    value: ResumeStyle[K],
+  ) => void;
+  resetStyle: () => void;
+};
 
 export const createStyleSlice: StateCreator<
   BuilderStore,
@@ -22,9 +22,9 @@ export const createStyleSlice: StateCreator<
   updateStyle: (key, value) => {
     set((state) => ({
       style: { ...state.style, [key]: value },
-    }))
+    }));
   },
   resetStyle: () => {
-    set({ style: { ...DEFAULT_STYLE } })
+    set({ style: { ...DEFAULT_STYLE } });
   },
-})
+});

@@ -36,6 +36,7 @@ UI design (T02), porting features (T03), database (T06).
 - The old app is either still runnable or preserved at a git tag.
 
 ## Decisions log
+
 - **Repo:** new repo `winnow` (`Development/winnow`). `resume-builder` stays untouched and runnable. No history migration.
 - **Name:** Winnow. Workspace scope `@winnow/*`. Feature folders stay `builder`, `bank`, `applications`, `ai`.
 - **Layout:** pnpm workspaces with `apps/web`, `packages/ui`, and `packages/core`. No Turborepo. No `apps/extension` until T27. Not microfrontends.

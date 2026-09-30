@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import {
   AlertDialog,
@@ -9,7 +9,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@winnow/ui/components/alert-dialog"
+} from "@winnow/ui/components/alert-dialog";
 
 export function ConfirmDialog({
   open,
@@ -21,14 +21,14 @@ export function ConfirmDialog({
   destructive = false,
   onConfirm,
 }: {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  title: string
-  description: string
-  confirmLabel?: string
-  cancelLabel?: string
-  destructive?: boolean
-  onConfirm: () => void
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  title: string;
+  description: string;
+  confirmLabel?: string;
+  cancelLabel?: string;
+  destructive?: boolean;
+  onConfirm: () => void;
 }) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -48,5 +48,5 @@ export function ConfirmDialog({
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
-  )
+  );
 }

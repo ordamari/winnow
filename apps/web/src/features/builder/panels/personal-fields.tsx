@@ -1,14 +1,18 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import type { PersonalInfo } from "@winnow/core";
 import { Input } from "@winnow/ui/components/input";
 import { Label } from "@winnow/ui/components/label";
+import { useTranslations } from "next-intl";
 
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
 
-const fields: { key: keyof PersonalInfo; type?: string; label: "name" | "phone" | "email" | "linkedin" | "github" }[] = [
+const fields: {
+  key: keyof PersonalInfo;
+  type?: string;
+  label: "name" | "phone" | "email" | "linkedin" | "github";
+}[] = [
   { key: "name", label: "name" },
   { key: "phone", label: "phone" },
   { key: "email", label: "email", type: "email" },
@@ -19,7 +23,9 @@ const fields: { key: keyof PersonalInfo; type?: string; label: "name" | "phone" 
 export function PersonalFields() {
   const t = useTranslations("builder");
   const personalInfo = useBuilderStore((state) => state.personalInfo);
-  const updatePersonalInfo = useBuilderStore((state) => state.updatePersonalInfo);
+  const updatePersonalInfo = useBuilderStore(
+    (state) => state.updatePersonalInfo,
+  );
 
   return (
     <section>
@@ -27,7 +33,10 @@ export function PersonalFields() {
       <div className="space-y-2">
         {fields.map(({ key, label, type }) => (
           <div key={key} className="space-y-1">
-            <Label htmlFor={`personal-${key}`} className="text-xs text-muted-foreground">
+            <Label
+              htmlFor={`personal-${key}`}
+              className="text-xs text-muted-foreground"
+            >
               {t(label)}
             </Label>
             <Input

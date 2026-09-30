@@ -33,8 +33,13 @@ Production infra, backups and domains (T38).
 - A thrown test error appears in the monitoring dashboard with a readable stack trace.
 
 ## Decisions log
-- ESLint + Prettier
-- Vercel for now
 
-
-_Fill in after planning._
+- ESLint + Prettier, with `eslint-plugin-simple-import-sort`. Biome was not used.
+- Vercel for preview deploys. Root directory is `apps/web`.
+- Sentry (`@sentry/nextjs`) for client and server. Source maps upload only when `SENTRY_AUTH_TOKEN` is set.
+- `NEXT_PUBLIC_SENTRY_DSN` is the one public exception to the server-only env rule. It is required when `VERCEL_ENV` is `preview` or `production`.
+- `OPENAI_API_KEY` stays optional so manual building does not need a key.
+- Dependabot (weekly npm and GitHub Actions), not Renovate.
+- Node 22 (`.nvmrc` and `engines`).
+- Playwright runs on pushes to `main`. Pull requests run lint, typecheck, Vitest, and build.
+- The core unit tests already cover `sanitizeTailorResult`, including dropping unknown ids.

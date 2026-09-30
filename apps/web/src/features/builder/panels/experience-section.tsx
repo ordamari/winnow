@@ -1,6 +1,5 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import {
   Select,
   SelectContent,
@@ -8,6 +7,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@winnow/ui/components/select";
+import { useTranslations } from "next-intl";
 
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
@@ -17,16 +17,18 @@ export function ExperienceSection() {
   const t = useTranslations("builder");
   const bank = useBuilderStore((state) => state.bank);
   const experienceTitles = useBuilderStore(
-    (state) => state.selections.experienceTitles
+    (state) => state.selections.experienceTitles,
   );
   const enabledBullets = useBuilderStore(
-    (state) => state.selections.enabledBullets
+    (state) => state.selections.enabledBullets,
   );
   const selectedVersionById = useBuilderStore(
-    (state) => state.selections.selectedVersionById
+    (state) => state.selections.selectedVersionById,
   );
   const bulletMatches = useBuilderStore((state) => state.bulletMatches);
-  const setExperienceTitle = useBuilderStore((state) => state.setExperienceTitle);
+  const setExperienceTitle = useBuilderStore(
+    (state) => state.setExperienceTitle,
+  );
   const toggleBullet = useBuilderStore((state) => state.toggleBullet);
   const setVersion = useBuilderStore((state) => state.setVersion);
 
@@ -66,7 +68,9 @@ export function ExperienceSection() {
                 selectedVersionId={selectedVersionById[bullet.id]}
                 match={bulletMatches[bullet.id]}
                 onToggle={() => toggleBullet(bullet.id)}
-                onSelectVersion={(versionId) => setVersion(bullet.id, versionId)}
+                onSelectVersion={(versionId) =>
+                  setVersion(bullet.id, versionId)
+                }
               />
             ))}
           </div>

@@ -8,7 +8,7 @@ Solve cold start for new users: upload the resume(s) they already have and get a
 
 ## Principle check
 
-This is *extraction* of the user's own text, not generation. The LLM may split and classify existing sentences into slots, but must copy text verbatim. Enforce with a post-check (each extracted string must appear in the source text, allowing whitespace/bullet-char normalization).
+This is _extraction_ of the user's own text, not generation. The LLM may split and classify existing sentences into slots, but must copy text verbatim. Enforce with a post-check (each extracted string must appear in the source text, allowing whitespace/bullet-char normalization).
 
 ## Scope
 

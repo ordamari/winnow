@@ -1,7 +1,6 @@
-"use client"
+"use client";
 
-import { useLocale, useTranslations } from "next-intl"
-import { Wordmark } from "@winnow/ui"
+import { Wordmark } from "@winnow/ui";
 import {
   Sidebar,
   SidebarContent,
@@ -10,16 +9,17 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@winnow/ui/components/sidebar"
+} from "@winnow/ui/components/sidebar";
+import { useLocale, useTranslations } from "next-intl";
 
-import { Link, usePathname } from "@/i18n/navigation"
-import { navItems } from "@/components/nav-items"
+import { navItems } from "@/components/nav-items";
+import { Link, usePathname } from "@/i18n/navigation";
 
 export function AppSidebar() {
-  const pathname = usePathname()
-  const locale = useLocale()
-  const t = useTranslations("nav")
-  const shell = useTranslations("shell")
+  const pathname = usePathname();
+  const locale = useLocale();
+  const t = useTranslations("nav");
+  const shell = useTranslations("shell");
 
   return (
     <Sidebar
@@ -46,8 +46,8 @@ export function AppSidebar() {
         <nav aria-label={t("main")}>
           <SidebarMenu className="px-2">
             {navItems.map((item) => {
-              const active = pathname === item.href
-              const label = t(item.labelKey)
+              const active = pathname === item.href;
+              const label = t(item.labelKey);
               return (
                 <SidebarMenuItem key={item.href}>
                   <SidebarMenuButton
@@ -60,12 +60,12 @@ export function AppSidebar() {
                     <span>{label}</span>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              )
+              );
             })}
           </SidebarMenu>
         </nav>
       </SidebarContent>
       <SidebarRail label={shell("toggleSidebar")} />
     </Sidebar>
-  )
+  );
 }

@@ -1,9 +1,9 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { Button } from "@winnow/ui/components/button";
 import { Input } from "@winnow/ui/components/input";
 import { Label } from "@winnow/ui/components/label";
+import { useTranslations } from "next-intl";
 
 import { useBuilderStore } from "../store/builder-store";
 import { ExperienceSection } from "./experience-section";
@@ -15,7 +15,9 @@ import { SummarySection } from "./summary-section";
 
 export function ContentPanel() {
   const t = useTranslations("builder");
-  const selectedTitle = useBuilderStore((state) => state.selections.selectedTitle);
+  const selectedTitle = useBuilderStore(
+    (state) => state.selections.selectedTitle,
+  );
   const setTitle = useBuilderStore((state) => state.setTitle);
   const resetContent = useBuilderStore((state) => state.resetContent);
 

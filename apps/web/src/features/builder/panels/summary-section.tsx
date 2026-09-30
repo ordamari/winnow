@@ -1,7 +1,7 @@
 "use client";
 
-import { useTranslations } from "next-intl";
 import { cn } from "cn";
+import { useTranslations } from "next-intl";
 
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
@@ -10,7 +10,8 @@ export function SummarySection() {
   const t = useTranslations("builder");
   const bank = useBuilderStore((state) => state.bank);
   const selectedId = useBuilderStore(
-    (state) => state.selections.selectedVersionById[state.bank?.summary.id ?? ""]
+    (state) =>
+      state.selections.selectedVersionById[state.bank?.summary.id ?? ""],
   );
   const setVersion = useBuilderStore((state) => state.setVersion);
 
@@ -29,7 +30,7 @@ export function SummarySection() {
                 "flex cursor-pointer items-start gap-2 rounded-lg border p-2",
                 selected
                   ? "border-primary bg-primary/5"
-                  : "border-border hover:border-ring"
+                  : "border-border hover:border-ring",
               )}
             >
               <input
