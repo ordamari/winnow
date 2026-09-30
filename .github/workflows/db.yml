@@ -27,7 +27,7 @@ jobs:
       DATABASE_URL_UNPOOLED: postgres://winnow:winnow@localhost:5432/winnow
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@v6
         with:
           version: 10.6.3
       - uses: actions/setup-node@v4
