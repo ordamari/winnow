@@ -1,6 +1,4 @@
-import type { ReactNode } from "react"
-
-import { Skeleton } from "@winnow/ui/components/skeleton"
+import { Skeleton } from "@winnow/ui/components/skeleton";
 import {
   Table,
   TableBody,
@@ -8,7 +6,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@winnow/ui/components/table"
+} from "@winnow/ui/components/table";
+import type { ReactNode } from "react";
 
 export function DataTable({
   columns,
@@ -16,10 +15,10 @@ export function DataTable({
   loading = false,
   emptyTitle = "No results",
 }: {
-  columns: { key: string; header: string }[]
-  rows: Array<Record<string, ReactNode>>
-  loading?: boolean
-  emptyTitle?: string
+  columns: { key: string; header: string }[];
+  rows: Array<Record<string, ReactNode>>;
+  loading?: boolean;
+  emptyTitle?: string;
 }) {
   return (
     <Table>
@@ -63,5 +62,5 @@ export function DataTable({
           : null}
       </TableBody>
     </Table>
-  )
+  );
 }

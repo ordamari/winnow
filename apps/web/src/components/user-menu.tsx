@@ -1,9 +1,7 @@
-"use client"
+"use client";
 
-import { useLocale, useTranslations } from "next-intl"
-import { useTheme } from "next-themes"
-import { Avatar, AvatarFallback } from "@winnow/ui/components/avatar"
-import { Button } from "@winnow/ui/components/button"
+import { Avatar, AvatarFallback } from "@winnow/ui/components/avatar";
+import { Button } from "@winnow/ui/components/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,17 +12,19 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@winnow/ui/components/dropdown-menu"
+} from "@winnow/ui/components/dropdown-menu";
+import { useLocale, useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
 
-import { usePathname, useRouter } from "@/i18n/navigation"
-import { routing } from "@/i18n/routing"
+import { usePathname, useRouter } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
 
 export function UserMenu() {
-  const { theme, setTheme } = useTheme()
-  const locale = useLocale()
-  const pathname = usePathname()
-  const router = useRouter()
-  const t = useTranslations("account")
+  const { theme, setTheme } = useTheme();
+  const locale = useLocale();
+  const pathname = usePathname();
+  const router = useRouter();
+  const t = useTranslations("account");
 
   return (
     <DropdownMenu>
@@ -64,9 +64,9 @@ export function UserMenu() {
           <DropdownMenuRadioGroup
             value={locale}
             onValueChange={(value) => {
-              const next = routing.locales.find((item) => item === value)
+              const next = routing.locales.find((item) => item === value);
               if (next) {
-                router.replace(pathname, { locale: next })
+                router.replace(pathname, { locale: next });
               }
             }}
           >
@@ -81,5 +81,5 @@ export function UserMenu() {
         <DropdownMenuItem disabled>{t("signOut")}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

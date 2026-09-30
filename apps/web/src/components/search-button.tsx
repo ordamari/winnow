@@ -1,9 +1,9 @@
-import { useTranslations } from "next-intl"
-import { SearchIcon } from "lucide-react"
-import { Button } from "@winnow/ui/components/button"
+import { Button } from "@winnow/ui/components/button";
+import { SearchIcon } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function SearchButton() {
-  const t = useTranslations("shell")
+  const t = useTranslations("shell");
 
   return (
     <Button
@@ -20,5 +20,5 @@ export function SearchButton() {
         ⌘K
       </kbd>
     </Button>
-  )
+  );
 }

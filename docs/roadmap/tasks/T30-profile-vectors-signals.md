@@ -4,7 +4,7 @@
 
 ## Goal
 
-Build the two inputs the recommendation engine needs: *what each candidate can prove* and *what has worked before*.
+Build the two inputs the recommendation engine needs: _what each candidate can prove_ and _what has worked before_.
 
 ## Scope
 

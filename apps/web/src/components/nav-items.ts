@@ -2,22 +2,22 @@ import {
   ChartColumn,
   Kanban,
   Library,
+  type LucideIcon,
   PenLine,
   Settings,
   Sparkles,
-  type LucideIcon,
-} from "lucide-react"
+} from "lucide-react";
 
 export const navItems: {
-  href: string
+  href: string;
   labelKey:
     | "builder"
     | "bank"
     | "applications"
     | "recommendations"
     | "insights"
-    | "settings"
-  icon: LucideIcon
+    | "settings";
+  icon: LucideIcon;
 }[] = [
   { href: "/builder", labelKey: "builder", icon: PenLine },
   { href: "/bank", labelKey: "bank", icon: Library },
@@ -25,4 +25,4 @@ export const navItems: {
   { href: "/recommendations", labelKey: "recommendations", icon: Sparkles },
   { href: "/insights", labelKey: "insights", icon: ChartColumn },
   { href: "/settings", labelKey: "settings", icon: Settings },
-]
+];

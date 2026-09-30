@@ -1,74 +1,74 @@
-"use client"
+"use client";
 
-import { useMemo, useState, type ReactNode } from "react"
-import { useFormatter, useTranslations } from "next-intl"
-import { useTheme } from "next-themes"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { z } from "zod"
-import { InboxIcon } from "lucide-react"
-import { Avatar, AvatarFallback } from "@winnow/ui/components/avatar"
-import { Badge } from "@winnow/ui/components/badge"
-import { Button } from "@winnow/ui/components/button"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Avatar, AvatarFallback } from "@winnow/ui/components/avatar";
+import { Badge } from "@winnow/ui/components/badge";
+import { Button } from "@winnow/ui/components/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@winnow/ui/components/card"
-import { Checkbox } from "@winnow/ui/components/checkbox"
-import { ConfirmDialog } from "@winnow/ui/components/confirm-dialog"
-import { DataTable } from "@winnow/ui/components/data-table"
-import { EmptyState } from "@winnow/ui/components/empty-state"
-import { ErrorState } from "@winnow/ui/components/error-state"
-import { Field, FieldError, FieldLabel } from "@winnow/ui/components/field"
-import { Input } from "@winnow/ui/components/input"
-import { Label } from "@winnow/ui/components/label"
-import { MatchPercent } from "@winnow/ui/components/match-percent"
-import { PageHeader } from "@winnow/ui/components/page-header"
-import { Separator } from "@winnow/ui/components/separator"
+} from "@winnow/ui/components/card";
+import { Checkbox } from "@winnow/ui/components/checkbox";
+import { ConfirmDialog } from "@winnow/ui/components/confirm-dialog";
+import { DataTable } from "@winnow/ui/components/data-table";
+import { EmptyState } from "@winnow/ui/components/empty-state";
+import { ErrorState } from "@winnow/ui/components/error-state";
+import { Field, FieldError, FieldLabel } from "@winnow/ui/components/field";
+import { Input } from "@winnow/ui/components/input";
+import { Label } from "@winnow/ui/components/label";
+import { MatchPercent } from "@winnow/ui/components/match-percent";
+import { PageHeader } from "@winnow/ui/components/page-header";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@winnow/ui/components/select"
-import { Skeleton } from "@winnow/ui/components/skeleton"
+} from "@winnow/ui/components/select";
+import { Separator } from "@winnow/ui/components/separator";
+import { Skeleton } from "@winnow/ui/components/skeleton";
 import {
+  type ApplicationStatus,
   applicationStatuses,
   StatusBadge,
-  type ApplicationStatus,
-} from "@winnow/ui/components/status-badge"
-import { Textarea } from "@winnow/ui/components/textarea"
+} from "@winnow/ui/components/status-badge";
+import { Textarea } from "@winnow/ui/components/textarea";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from "@winnow/ui/components/tooltip"
+} from "@winnow/ui/components/tooltip";
+import { InboxIcon } from "lucide-react";
+import { useFormatter, useTranslations } from "next-intl";
+import { useTheme } from "next-themes";
+import { type ReactNode, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
-const sampleDate = new Date("2026-09-30T09:00:00.000Z")
-const sampleNumber = 12840.5
+const sampleDate = new Date("2026-09-30T09:00:00.000Z");
+const sampleNumber = 12840.5;
 
 export function DesignGallery() {
-  const { theme, setTheme } = useTheme()
-  const t = useTranslations("design")
-  const errors = useTranslations("error")
-  const format = useFormatter()
-  const [confirmOpen, setConfirmOpen] = useState(false)
+  const { theme, setTheme } = useTheme();
+  const t = useTranslations("design");
+  const errors = useTranslations("error");
+  const format = useFormatter();
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const companySchema = useMemo(
     () =>
       z.object({
         company: z.string().min(1, t("form.companyRequired")),
       }),
-    [t]
-  )
+    [t],
+  );
   const form = useForm<z.infer<typeof companySchema>>({
     resolver: zodResolver(companySchema),
     defaultValues: { company: "" },
-  })
+  });
   const statusLabels: Record<ApplicationStatus, string> = {
     saved: t("statuses.saved"),
     applied: t("statuses.applied"),
@@ -81,12 +81,12 @@ export function DesignGallery() {
     rejected: t("statuses.rejected"),
     ghosted: t("statuses.ghosted"),
     withdrawn: t("statuses.withdrawn"),
-  }
+  };
   const sampleColumns = [
     { key: "company", header: t("table.company") },
     { key: "role", header: t("table.role") },
     { key: "status", header: t("table.status") },
-  ]
+  ];
 
   return (
     <div className="space-y-8">
@@ -182,7 +182,7 @@ export function DesignGallery() {
         <form
           className="max-w-sm space-y-4"
           onSubmit={form.handleSubmit(() => {
-            toast.success(t("form.companySaved"))
+            toast.success(t("form.companySaved"));
           })}
         >
           <Field
@@ -213,9 +213,7 @@ export function DesignGallery() {
               <SelectContent>
                 <SelectItem value="saved">{t("form.saved")}</SelectItem>
                 <SelectItem value="applied">{t("form.applied")}</SelectItem>
-                <SelectItem value="screening">
-                  {t("form.screening")}
-                </SelectItem>
+                <SelectItem value="screening">{t("form.screening")}</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -266,7 +264,10 @@ export function DesignGallery() {
           onRetry={() => toast.message(t("feedback.retryClicked"))}
         />
         <div className="flex flex-wrap items-center gap-3">
-          <Button type="button" onClick={() => toast.success(t("feedback.saved"))}>
+          <Button
+            type="button"
+            onClick={() => toast.success(t("feedback.saved"))}
+          >
             {t("feedback.showToast")}
           </Button>
           <Button
@@ -277,9 +278,7 @@ export function DesignGallery() {
             {t("feedback.openConfirm")}
           </Button>
           <Tooltip>
-            <TooltipTrigger
-              render={<Button type="button" variant="outline" />}
-            >
+            <TooltipTrigger render={<Button type="button" variant="outline" />}>
               {t("feedback.hoverTip")}
             </TooltipTrigger>
             <TooltipContent>{t("feedback.tooltip")}</TooltipContent>
@@ -298,8 +297,8 @@ export function DesignGallery() {
           cancelLabel={t("feedback.cancel")}
           destructive
           onConfirm={() => {
-            setConfirmOpen(false)
-            toast.success(t("feedback.archived"))
+            setConfirmOpen(false);
+            toast.success(t("feedback.archived"));
           }}
         />
       </GallerySection>
@@ -327,20 +326,20 @@ export function DesignGallery() {
         </p>
       </GallerySection>
     </div>
-  )
+  );
 }
 
 function GallerySection({
   title,
   children,
 }: {
-  title: string
-  children: ReactNode
+  title: string;
+  children: ReactNode;
 }) {
   return (
     <section className="space-y-3">
       <h2 className="text-sm font-medium">{title}</h2>
       {children}
     </section>
-  )
+  );
 }

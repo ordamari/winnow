@@ -2,12 +2,32 @@
   "name": "winnow",
   "private": true,
   "packageManager": "pnpm@10.6.3",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "pnpm --filter @winnow/web dev",
     "build": "pnpm --filter @winnow/web build",
-    "typecheck": "pnpm -r typecheck"
+    "typecheck": "pnpm -r typecheck",
+    "lint": "pnpm --filter @winnow/web lint && eslint packages",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:e2e": "pnpm --filter @winnow/web build && pnpm --filter @winnow/web test:e2e",
+    "prepare": "husky"
   },
   "optionalDependencies": {
     "@swc/core-win32-x64-msvc": "1.16.13"
+  },
+  "devDependencies": {
+    "eslint": "^9",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-simple-import-sort": "^14.0.0",
+    "husky": "^9.1.7",
+    "jsdom": "^30.1.1",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
+    "typescript-eslint": "^8.71.0",
+    "vitest": "^3.2.4"
   }
 }
