@@ -198,6 +198,7 @@ export const sectionEntries = pgTable(
       .notNull()
       .default(sql`ARRAY[]::text[]`),
     period: text("period"),
+    url: text("url"),
     defaultChecked: boolean("default_checked").notNull().default(false),
     ...timestamps(),
     deletedAt: deletedAt(),

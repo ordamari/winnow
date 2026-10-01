@@ -46,7 +46,8 @@ export default async function BuilderPage({
 
   return (
     <BuilderScreen
-      data={data}
+      data={data.data}
+      updatedAt={data.updatedAt}
       hasApiKey={Boolean(process.env.OPENAI_API_KEY?.trim())}
     />
   );

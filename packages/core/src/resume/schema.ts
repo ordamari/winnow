@@ -61,6 +61,7 @@ export const sectionEntrySchema = z.object({
   title: z.string().optional(),
   alternativeTitles: z.array(z.string()).optional(),
   period: z.string().optional(),
+  url: z.string().optional(),
   defaultChecked: z.boolean().optional(),
   versions: z.array(textVersionSchema).optional(),
   bullets: z.array(versionedTextSchema).optional(),

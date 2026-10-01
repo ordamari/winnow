@@ -86,6 +86,8 @@ function compactEntry(entry: SectionEntry): SectionEntry {
     compacted.alternativeTitles = [...entry.alternativeTitles];
   }
   if (period) compacted.period = period;
+  const url = filled(entry.url);
+  if (url) compacted.url = url;
   if (entry.versions?.length) {
     compacted.defaultChecked = entry.defaultChecked ?? false;
     compacted.versions = compactVersions(entry.versions);

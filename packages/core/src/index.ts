@@ -1,10 +1,26 @@
 export const productName = "Winnow";
 
+export { emptyResumeData } from "./resume/empty";
+export {
+  MARKDOWN_CHARS_PER_LINE,
+  markdownLineHint,
+  markdownPlainText,
+  type MarkdownRun,
+  markdownRuns,
+  safeMarkdownUrl,
+} from "./resume/markdown";
 export {
   exportResumeData,
   parseResumeData,
   summarizeResume,
 } from "./resume/normalize";
+export {
+  formatPeriod,
+  type ParsedPeriod,
+  parsePeriod,
+  PERIOD_MONTHS,
+  type PeriodMonth,
+} from "./resume/period";
 export type {
   RenderedEntry,
   RenderedResume,

@@ -1,6 +1,11 @@
 "use client";
 
-import type { BulletMatch, TextVersion, VersionedText } from "@winnow/core";
+import {
+  type BulletMatch,
+  markdownPlainText,
+  type TextVersion,
+  type VersionedText,
+} from "@winnow/core";
 import { Checkbox } from "@winnow/ui/components/checkbox";
 import { Label } from "@winnow/ui/components/label";
 import { MatchPercent } from "@winnow/ui/components/match-percent";
@@ -8,7 +13,7 @@ import { cn } from "cn";
 import { useTranslations } from "next-intl";
 
 function plainText(text: string) {
-  return text.replace(/\*\*/g, "");
+  return markdownPlainText(text);
 }
 
 function VersionChoice({

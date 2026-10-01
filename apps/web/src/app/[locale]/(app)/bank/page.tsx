@@ -1,7 +1,5 @@
-import { PageHeader } from "@winnow/ui/components/page-header";
-import { getTranslations } from "next-intl/server";
-
-import { BankImport } from "@/features/bank/bank-import";
+import { BankScreen } from "@/features/bank/bank-screen";
+import { EmptyBank } from "@/features/bank/empty-bank";
 import { setupLocale } from "@/i18n/locale";
 import { requireUser } from "@/server/auth/session";
 import { loadBankForUser } from "@/server/bank/store";
@@ -17,13 +15,8 @@ export default async function BankPage({
   const { locale } = await params;
   setupLocale(locale);
   const current = await requireUser();
-  const t = await getTranslations("bank");
   const bank = await loadBankForUser(db, current.user.id);
 
-  return (
-    <>
-      <PageHeader title={t("title")} description={t("description")} />
-      <BankImport hasBank={bank !== null} />
-    </>
-  );
+  if (!bank) return <EmptyBank />;
+  return <BankScreen key={bank.updatedAt} initial={bank} />;
 }

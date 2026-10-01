@@ -1,0 +1,1 @@
+ALTER TABLE "section_entries" ADD COLUMN "url" text;

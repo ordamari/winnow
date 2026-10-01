@@ -83,6 +83,7 @@ export interface RenderedEntry {
   organization?: string;
   title?: string;
   period?: string;
+  url?: string;
   bullets: RenderedText[];
 }
 
@@ -109,6 +110,7 @@ function renderedEntry(
       organization: entry.organization,
       title: selections.experienceTitles[entry.id] ?? entry.title,
       period: entry.period,
+      url: entry.url,
       bullets: (entry.bullets ?? [])
         .filter((bullet) => selections.enabledBullets[bullet.id])
         .map((bullet) => renderSlot(bullet, selections.selectedVersionById)),
@@ -119,6 +121,7 @@ function renderedEntry(
     if (!selections.enabledHighlights[entry.id]) return null;
     return {
       id: entry.id,
+      url: entry.url,
       bullets: [
         renderSlot(
           { id: entry.id, versions: entry.versions ?? [] },
@@ -133,6 +136,7 @@ function renderedEntry(
     organization: entry.organization,
     title: entry.title,
     period: entry.period,
+    url: entry.url,
     bullets: [],
   };
 }

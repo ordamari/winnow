@@ -21,7 +21,7 @@ Replace hand-editing JSON with a polished visual editor for the whole bank. This
 
 ## Out of scope
 
-AI assistance on bullet text (forbidden by principle #1), PDF import (T10).
+AI assistance on bullet text (forbidden by principle #1), PDF import (T10). Moving the bank document from Zustand into TanStack Query (T09.5); T09 may keep writing the bank through the existing client store.
 
 ## Decisions (resolve in Plan mode)
 
@@ -37,4 +37,8 @@ AI assistance on bullet text (forbidden by principle #1), PDF import (T10).
 
 ## Decisions log
 
-_Fill in after planning._
+- **Layout:** Section rail on the left, focused editor on the right. Narrow screens stack the rail above the editor. Personal info stays pinned above the draggable sections.
+- **Text:** CommonMark in a textarea (`**bold**`, `[label](https://...)`, italics, inline code). Bold and Link buttons wrap the selection. The preview uses `react-markdown`. The PDF walks the same remark tree. Shift+Enter inserts a newline. Enter adds a version. Cmd/Ctrl+Enter adds a bullet.
+- **Links:** Inline markdown links render in the PDF when the URL is `http`, `https`, or `mailto`. An entry can also store an optional URL, shown on that entry’s header line.
+- **Preview:** No PDF on `/bank`. Each version shows a character count and a rough line estimate. The builder previews the PDF and reloads the bank when `updated_at` changes.
+- **Save:** Debounced save of the whole document, guarded by `banks.updated_at`, through the existing replace path. Deletes and reorders show an undo toast.

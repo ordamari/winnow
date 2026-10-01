@@ -111,4 +111,35 @@ describe("parseResumeData", () => {
     const canonical = exportResumeData(parseResumeData(legacy));
     expect(exportResumeData(parseResumeData(canonical))).toEqual(canonical);
   });
+
+  it("round-trips an entry url and omits an empty one", () => {
+    const withUrl = exportResumeData(parseResumeData(legacy));
+    const experience = withUrl.sections.find(
+      (section) => section.kind === "entries" && section.id === "experience",
+    );
+    if (experience?.kind !== "entries" || !experience.entries[0]) {
+      throw new Error("expected an experience entry");
+    }
+    experience.entries[0].url = "https://northwind.example";
+    expect(exportResumeData(parseResumeData(withUrl))).toEqual(withUrl);
+
+    const cleared = structuredClone(withUrl);
+    const clearedExperience = cleared.sections.find(
+      (section) => section.kind === "entries" && section.id === "experience",
+    );
+    if (
+      clearedExperience?.kind !== "entries" ||
+      !clearedExperience.entries[0]
+    ) {
+      throw new Error("expected an experience entry");
+    }
+    clearedExperience.entries[0].url = "";
+    const omitted = exportResumeData(parseResumeData(cleared));
+    const again = omitted.sections.find(
+      (section) => section.kind === "entries" && section.id === "experience",
+    );
+    if (again?.kind === "entries") {
+      expect(again.entries[0]?.url).toBeUndefined();
+    }
+  });
 });

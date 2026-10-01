@@ -13,9 +13,12 @@ import {
 } from "@react-pdf/renderer";
 import {
   DEFAULT_STYLE,
+  type MarkdownRun,
+  markdownRuns,
   type PersonalInfo,
   type RenderedSection,
   type ResumeStyle,
+  safeMarkdownUrl,
   type SkillCategoryView,
   type TextVersion,
 } from "@winnow/core";
@@ -146,6 +149,22 @@ function buildStyles(t: ResumeStyle) {
     bold: {
       fontWeight: 700,
     },
+    italic: {
+      fontStyle: "italic" as const,
+    },
+    inlineCode: {
+      fontFamily: "Courier",
+    },
+    inlineLink: {
+      color: t.accentColor,
+      textDecoration: "underline" as const,
+    },
+    entryLink: {
+      fontSize: t.bodyFontSize,
+      color: t.accentColor,
+      textDecoration: "underline" as const,
+      marginBottom: 3,
+    },
   });
 }
 
@@ -229,18 +248,63 @@ function GitHubIcon({ color }: { color: string }) {
   );
 }
 
-function parseBoldText(text: string, boldStyle: { fontWeight: number }) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
+function MarkdownRuns({
+  runs,
+  styles,
+}: {
+  runs: MarkdownRun[];
+  styles: {
+    bold: { fontWeight: number };
+    italic: { fontStyle: "italic" };
+    inlineCode: { fontFamily: string };
+    inlineLink: { color: string; textDecoration: "underline" };
+  };
+}) {
+  return runs.map((run, index) => {
+    if (run.type === "text") return <Text key={index}>{run.value}</Text>;
+    if (run.type === "break") return <Text key={index}>{"\n"}</Text>;
+    if (run.type === "code") {
       return (
-        <Text key={i} style={boldStyle}>
-          {part.slice(2, -2)}
+        <Text key={index} style={styles.inlineCode}>
+          {run.value}
         </Text>
       );
     }
-    return <Text key={i}>{part}</Text>;
+    if (run.type === "bold") {
+      return (
+        <Text key={index} style={styles.bold}>
+          <MarkdownRuns runs={run.children} styles={styles} />
+        </Text>
+      );
+    }
+    if (run.type === "italic") {
+      return (
+        <Text key={index} style={styles.italic}>
+          <MarkdownRuns runs={run.children} styles={styles} />
+        </Text>
+      );
+    }
+    return (
+      <Link key={index} src={run.url} style={styles.inlineLink}>
+        <MarkdownRuns runs={run.children} styles={styles} />
+      </Link>
+    );
   });
+}
+
+function MarkdownText({
+  text,
+  styles,
+}: {
+  text: string;
+  styles: {
+    bold: { fontWeight: number };
+    italic: { fontStyle: "italic" };
+    inlineCode: { fontFamily: string };
+    inlineLink: { color: string; textDecoration: "underline" };
+  };
+}) {
+  return <MarkdownRuns runs={markdownRuns(text)} styles={styles} />;
 }
 
 export interface ResumePDFProps {
@@ -318,7 +382,7 @@ export function ResumePDF({
                 <Text style={s.sectionHeader}>{section.title}</Text>
                 <View style={s.summaryWrap}>
                   <Text style={s.summaryText}>
-                    {parseBoldText(summary.text, s.bold)}
+                    <MarkdownText text={summary.text} styles={s} />
                   </Text>
                 </View>
               </View>
@@ -354,11 +418,23 @@ export function ResumePDF({
                       <Text style={s.companyName}>{entry.organization}</Text>
                     ) : null}
                     {role ? <Text style={s.roleLine}>{role}</Text> : null}
+                    {entry.url ? (
+                      safeMarkdownUrl(entry.url) ? (
+                        <Link
+                          src={safeMarkdownUrl(entry.url) ?? entry.url}
+                          style={s.entryLink}
+                        >
+                          {entry.url}
+                        </Link>
+                      ) : (
+                        <Text style={s.roleLine}>{entry.url}</Text>
+                      )
+                    ) : null}
                     {entry.bullets.map((bullet) => (
                       <View key={bullet.id} style={s.bulletRow}>
                         <Text style={s.bulletDot}>•</Text>
                         <Text style={s.bulletText}>
-                          {parseBoldText(bullet.text, s.bold)}
+                          <MarkdownText text={bullet.text} styles={s} />
                         </Text>
                       </View>
                     ))}

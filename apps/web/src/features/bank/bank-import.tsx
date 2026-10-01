@@ -8,9 +8,9 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 
 import { useRouter } from "@/i18n/navigation";
-import { exportBankAction, importBankAction } from "@/server/bank/actions";
+import { importBankAction } from "@/server/bank/actions";
 
-export function BankImport({ hasBank }: { hasBank: boolean }) {
+export function BankImport({ onImported }: { onImported?: () => void }) {
   const t = useTranslations("bank");
   const router = useRouter();
   const [raw, setRaw] = useState("");
@@ -21,12 +21,9 @@ export function BankImport({ hasBank }: { hasBank: boolean }) {
     sectionTitles: string[];
   } | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [saved, setSaved] = useState(false);
   const [pending, setPending] = useState(false);
-  const [canExport, setCanExport] = useState(hasBank);
 
   function readPreview(text: string) {
-    setSaved(false);
     setRaw(text);
     if (!text.trim()) {
       setPreview(null);
@@ -58,26 +55,12 @@ export function BankImport({ hasBank }: { hasBank: boolean }) {
       setError(t("invalid"));
       return;
     }
-    setSaved(true);
-    setCanExport(true);
+    onImported?.();
     router.refresh();
   }
 
-  async function onExport() {
-    const json = await exportBankAction();
-    if (!json) return;
-    const url = URL.createObjectURL(
-      new Blob([json], { type: "application/json" }),
-    );
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "resume-data.json";
-    link.click();
-    URL.revokeObjectURL(url);
-  }
-
   return (
-    <div className="mx-auto flex w-full max-w-2xl flex-col gap-4">
+    <div className="flex flex-col gap-4 px-4 pb-4">
       <div className="space-y-2">
         <Label htmlFor="resume-json">{t("pasteLabel")}</Label>
         <Textarea
@@ -98,13 +81,11 @@ export function BankImport({ hasBank }: { hasBank: boolean }) {
           onChange={(event) => onFile(event.target.files?.[0])}
         />
       </div>
-
       {error ? (
         <p className="text-sm text-destructive" role="alert">
           {error}
         </p>
       ) : null}
-
       {preview ? (
         <div className="rounded-lg border p-4">
           <h2 className="text-sm font-medium">{t("previewTitle")}</h2>
@@ -126,21 +107,6 @@ export function BankImport({ hasBank }: { hasBank: boolean }) {
           </Button>
         </div>
       ) : null}
-
-      {saved ? (
-        <p className="text-sm text-muted-foreground">{t("saved")}</p>
-      ) : null}
-
-      <div>
-        <Button
-          type="button"
-          variant="outline"
-          disabled={!canExport}
-          onClick={onExport}
-        >
-          {t("export")}
-        </Button>
-      </div>
     </div>
   );
 }

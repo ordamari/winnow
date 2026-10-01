@@ -23,6 +23,18 @@ import {
 
 type Tx = Parameters<Parameters<Database["transaction"]>[0]>[0];
 
+export class BankConflictError extends Error {
+  constructor() {
+    super("Bank was updated somewhere else");
+    this.name = "BankConflictError";
+  }
+}
+
+export type LoadedBank = {
+  data: ResumeData;
+  updatedAt: string;
+};
+
 function byPosition<T extends { position: number }>(rows: T[]) {
   return [...rows].sort((a, b) => a.position - b.position);
 }
@@ -123,14 +135,23 @@ export async function replaceBankForUser(
   database: Database,
   userId: string,
   data: ResumeData,
-) {
+  expectedUpdatedAt?: string,
+): Promise<string> {
   const canonical = exportResumeData(data);
-  await database.transaction(async (tx) => {
+  return database.transaction(async (tx) => {
     const [existing] = await tx
-      .select({ id: banks.id })
+      .select({ id: banks.id, updatedAt: banks.updatedAt })
       .from(banks)
       .where(ownedBy(banks.userId, banks.deletedAt, userId))
-      .limit(1);
+      .limit(1)
+      .for("update");
+
+    if (
+      expectedUpdatedAt !== undefined &&
+      (!existing || existing.updatedAt.toISOString() !== expectedUpdatedAt)
+    ) {
+      throw new BankConflictError();
+    }
 
     const bankId = existing?.id ?? randomUUID();
     if (existing) {
@@ -238,6 +259,7 @@ export async function replaceBankForUser(
             title: entry.title ?? null,
             alternativeTitles: entry.alternativeTitles ?? [],
             period: entry.period ?? null,
+            url: entry.url ?? null,
             defaultChecked: entry.defaultChecked ?? false,
           });
           if (entry.versions?.length) {
@@ -267,13 +289,43 @@ export async function replaceBankForUser(
         }
       }
     }
+
+    const [saved] = await tx
+      .select({ updatedAt: banks.updatedAt })
+      .from(banks)
+      .where(eq(banks.id, bankId))
+      .limit(1);
+    if (!saved) throw new Error("bank missing after write");
+    return saved.updatedAt.toISOString();
   });
+}
+
+export async function saveBankForUser(
+  database: Database,
+  userId: string,
+  data: ResumeData,
+  expectedUpdatedAt: string,
+): Promise<{ ok: true; updatedAt: string } | { ok: false; conflict: true }> {
+  try {
+    const updatedAt = await replaceBankForUser(
+      database,
+      userId,
+      data,
+      expectedUpdatedAt,
+    );
+    return { ok: true, updatedAt };
+  } catch (error) {
+    if (error instanceof BankConflictError) {
+      return { ok: false, conflict: true };
+    }
+    throw error;
+  }
 }
 
 export async function loadBankForUser(
   database: Database,
   userId: string,
-): Promise<ResumeData | null> {
+): Promise<LoadedBank | null> {
   const [bank] = await database
     .select()
     .from(banks)
@@ -433,6 +485,7 @@ export async function loadBankForUser(
           next.alternativeTitles = entry.alternativeTitles;
         }
         if (entry.period) next.period = entry.period;
+        if (entry.url) next.url = entry.url;
         if (body) {
           next.defaultChecked = entry.defaultChecked;
           next.versions = toVersions(versionsBySlot.get(body.id) ?? []);
@@ -455,5 +508,8 @@ export async function loadBankForUser(
     }),
   };
 
-  return exportResumeData(data);
+  return {
+    data: exportResumeData(data),
+    updatedAt: bank.updatedAt.toISOString(),
+  };
 }

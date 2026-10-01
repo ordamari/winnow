@@ -5,7 +5,7 @@ import { Button } from "@winnow/ui/components/button";
 import { Skeleton } from "@winnow/ui/components/skeleton";
 import { cn } from "cn";
 import { useTranslations } from "next-intl";
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useState } from "react";
 
 import { ControlPanel } from "./panels/control-panel";
 import { resumeFileName } from "./pdf/file-name";
@@ -15,14 +15,16 @@ import { useBuilderStore } from "./store/builder-store";
 
 export function BuilderScreen({
   data,
+  updatedAt,
   hasApiKey,
 }: {
   data: ResumeData;
+  updatedAt: string;
   hasApiKey: boolean;
 }) {
-  if (useBuilderStore.getState().bank === null) {
+  useLayoutEffect(() => {
     useBuilderStore.getState().hydrate(data);
-  }
+  }, [data, updatedAt]);
 
   return <BuilderWorkspace hasApiKey={hasApiKey} />;
 }

@@ -1,5 +1,6 @@
 "use client";
 
+import { markdownPlainText } from "@winnow/core";
 import { cn } from "cn";
 
 import { useBuilderStore } from "../store/builder-store";
@@ -43,7 +44,7 @@ export function SummarySection({ title }: { title: string }) {
                   {version.label}
                 </span>
                 <span className="text-xs leading-tight text-muted-foreground">
-                  {version.text.replace(/\*\*/g, "")}
+                  {markdownPlainText(version.text)}
                 </span>
               </span>
             </label>
