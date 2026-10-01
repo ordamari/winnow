@@ -8,6 +8,11 @@ import {
 import type { StateCreator } from "zustand";
 
 import type { BuilderStore } from "./builder-store";
+import {
+  bulletIds,
+  highlightIds,
+  reconcileSelections,
+} from "./reconcile-selections";
 
 function slugId(prefix: string) {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 6)}`;
@@ -35,15 +40,17 @@ const emptySelections: ResumeSelections = {
 };
 
 export type ContentSlice = {
-  bank: ResumeData | null;
+  sessionUserId: string | null;
   selections: ResumeSelections;
   personalInfo: PersonalInfo;
-  hydrate: (data: ResumeData) => void;
+  personalInfoEdited: boolean;
+  seedSession: (userId: string, data: ResumeData) => void;
+  applyBankChange: (previous: ResumeData, next: ResumeData) => void;
   updatePersonalInfo: <K extends keyof PersonalInfo>(
     key: K,
     value: PersonalInfo[K],
   ) => void;
-  resetContent: () => void;
+  resetContent: (bank: ResumeData) => void;
   applyContentSelections: (result: TailorResult) => void;
   toggleSkill: (skillId: string) => void;
   toggleBullet: (bulletId: string) => void;
@@ -57,36 +64,58 @@ export type ContentSlice = {
   assignSkill: (skillId: string, categoryId: string | null) => void;
 };
 
+function pickMatches<T>(matches: Record<string, T>, ids: Set<string>) {
+  const next: Record<string, T> = {};
+  for (const [id, match] of Object.entries(matches)) {
+    if (ids.has(id)) next[id] = match;
+  }
+  return next;
+}
+
 export const createContentSlice: StateCreator<
   BuilderStore,
   [],
   [],
   ContentSlice
-> = (set, get) => ({
-  bank: null,
+> = (set) => ({
+  sessionUserId: null,
   selections: emptySelections,
   personalInfo: emptyPersonalInfo,
-  hydrate: (data) => {
+  personalInfoEdited: false,
+  seedSession: (userId, data) => {
     set({
-      bank: data,
+      sessionUserId: userId,
       selections: buildInitialSelections(data),
       personalInfo: { ...data.personalInfo },
+      personalInfoEdited: false,
       bulletMatches: {},
       highlightMatches: {},
       jdMatch: null,
     });
   },
+  applyBankChange: (previous, next) => {
+    const bullets = bulletIds(next);
+    const highlights = highlightIds(next);
+    set((state) => ({
+      selections: reconcileSelections(previous, next, state.selections),
+      personalInfo: state.personalInfoEdited
+        ? state.personalInfo
+        : { ...next.personalInfo },
+      bulletMatches: pickMatches(state.bulletMatches, bullets),
+      highlightMatches: pickMatches(state.highlightMatches, highlights),
+    }));
+  },
   updatePersonalInfo: (key, value) => {
     set((state) => ({
       personalInfo: { ...state.personalInfo, [key]: value },
+      personalInfoEdited: true,
     }));
   },
-  resetContent: () => {
-    const bank = get().bank;
-    if (!bank) return;
+  resetContent: (bank) => {
     set({
       selections: buildInitialSelections(bank),
       personalInfo: { ...bank.personalInfo },
+      personalInfoEdited: false,
       bulletMatches: {},
       highlightMatches: {},
       jdMatch: null,

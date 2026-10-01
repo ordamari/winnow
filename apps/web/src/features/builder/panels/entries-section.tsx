@@ -9,6 +9,8 @@ import {
   SelectValue,
 } from "@winnow/ui/components/select";
 
+import { useBankData } from "@/features/bank/bank-query";
+
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
 import { VersionedSlot } from "./versioned-slot";
@@ -16,7 +18,7 @@ import { VersionedSlot } from "./versioned-slot";
 type EntriesSectionData = Extract<ResumeSection, { kind: "entries" }>;
 
 export function EntriesSection({ section }: { section: EntriesSectionData }) {
-  const bank = useBuilderStore((state) => state.bank);
+  const loaded = useBankData();
   const experienceTitles = useBuilderStore(
     (state) => state.selections.experienceTitles,
   );
@@ -38,7 +40,7 @@ export function EntriesSection({ section }: { section: EntriesSectionData }) {
   const toggleHighlight = useBuilderStore((state) => state.toggleHighlight);
   const setVersion = useBuilderStore((state) => state.setVersion);
 
-  if (!bank) return null;
+  if (!loaded) return null;
 
   return (
     <section>

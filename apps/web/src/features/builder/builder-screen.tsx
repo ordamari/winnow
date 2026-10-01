@@ -1,44 +1,82 @@
 "use client";
 
 import { renderResume, type ResumeData } from "@winnow/core";
-import { Button } from "@winnow/ui/components/button";
+import { Button, buttonVariants } from "@winnow/ui/components/button";
+import { EmptyState } from "@winnow/ui/components/empty-state";
+import { ErrorState } from "@winnow/ui/components/error-state";
 import { Skeleton } from "@winnow/ui/components/skeleton";
 import { cn } from "cn";
 import { useTranslations } from "next-intl";
 import { useLayoutEffect, useMemo, useState } from "react";
+
+import { useBankUserId } from "@/components/query-provider";
+import { type BankSnapshot, useHydrateBank } from "@/features/bank/bank-query";
+import { Link } from "@/i18n/navigation";
 
 import { ControlPanel } from "./panels/control-panel";
 import { resumeFileName } from "./pdf/file-name";
 import { ResumePdfDownload, ResumePdfPreview } from "./pdf/pdf-views";
 import { useDebouncedValue } from "./pdf/use-debounced-value";
 import { useBuilderStore } from "./store/builder-store";
+import { syncBuilderSession } from "./store/session-sync";
 
 export function BuilderScreen({
-  data,
-  updatedAt,
+  initial,
+  loadError,
   hasApiKey,
 }: {
-  data: ResumeData;
-  updatedAt: string;
+  initial: BankSnapshot | null;
+  loadError: boolean;
   hasApiKey: boolean;
 }) {
-  useLayoutEffect(() => {
-    useBuilderStore.getState().hydrate(data);
-  }, [data, updatedAt]);
+  const t = useTranslations("builder");
+  const userId = useBankUserId();
+  const loaded = useHydrateBank(initial);
+  const sessionUserId = useBuilderStore((state) => state.sessionUserId);
 
-  return <BuilderWorkspace hasApiKey={hasApiKey} />;
+  useLayoutEffect(() => {
+    if (!loaded) return;
+    syncBuilderSession(userId, loaded.data);
+  }, [loaded, userId]);
+
+  if (!loaded) {
+    if (loadError) {
+      return (
+        <ErrorState title={t("loadErrorTitle")} description={t("loadError")} />
+      );
+    }
+    return (
+      <EmptyState
+        title={t("emptyTitle")}
+        description={t("emptyDescription")}
+        action={
+          <Link href="/bank" className={buttonVariants()}>
+            {t("emptyAction")}
+          </Link>
+        }
+      />
+    );
+  }
+
+  if (sessionUserId !== userId) return <BuilderSkeleton />;
+
+  return <BuilderWorkspace bank={loaded.data} hasApiKey={hasApiKey} />;
 }
 
-function BuilderWorkspace({ hasApiKey }: { hasApiKey: boolean }) {
+function BuilderWorkspace({
+  bank,
+  hasApiKey,
+}: {
+  bank: ResumeData;
+  hasApiKey: boolean;
+}) {
   const t = useTranslations("builder");
   const [pane, setPane] = useState<"edit" | "preview">("edit");
-  const bank = useBuilderStore((state) => state.bank);
   const selections = useBuilderStore((state) => state.selections);
   const personalInfo = useBuilderStore((state) => state.personalInfo);
   const style = useBuilderStore((state) => state.style);
 
   const pdfProps = useMemo(() => {
-    if (!bank) return null;
     const rendered = renderResume(bank, selections);
     return {
       personalInfo,
@@ -51,10 +89,6 @@ function BuilderWorkspace({ hasApiKey }: { hasApiKey: boolean }) {
   }, [bank, personalInfo, selections, style]);
 
   const previewProps = useDebouncedValue(pdfProps, 250);
-
-  if (!pdfProps || !previewProps) {
-    return <BuilderSkeleton />;
-  }
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">

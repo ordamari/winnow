@@ -1,5 +1,6 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { parseResumeData, summarizeResume } from "@winnow/core";
 import { Button } from "@winnow/ui/components/button";
 import { Label } from "@winnow/ui/components/label";
@@ -7,12 +8,17 @@ import { Textarea } from "@winnow/ui/components/textarea";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { useBankUserId } from "@/components/query-provider";
 import { useRouter } from "@/i18n/navigation";
 import { importBankAction } from "@/server/bank/actions";
+
+import { bankQueryKey } from "./bank-query";
 
 export function BankImport({ onImported }: { onImported?: () => void }) {
   const t = useTranslations("bank");
   const router = useRouter();
+  const userId = useBankUserId();
+  const queryClient = useQueryClient();
   const [raw, setRaw] = useState("");
   const [preview, setPreview] = useState<{
     jobs: number;
@@ -55,6 +61,10 @@ export function BankImport({ onImported }: { onImported?: () => void }) {
       setError(t("invalid"));
       return;
     }
+    queryClient.setQueryData(bankQueryKey(userId), {
+      data: result.data,
+      updatedAt: result.updatedAt,
+    });
     onImported?.();
     router.refresh();
   }

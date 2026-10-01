@@ -3,18 +3,21 @@
 import { markdownPlainText } from "@winnow/core";
 import { cn } from "cn";
 
+import { useBankData } from "@/features/bank/bank-query";
+
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
 
 export function SummarySection({ title }: { title: string }) {
-  const bank = useBuilderStore((state) => state.bank);
+  const loaded = useBankData();
+  const summaryId = loaded?.data.summary.id ?? "";
   const selectedId = useBuilderStore(
-    (state) =>
-      state.selections.selectedVersionById[state.bank?.summary.id ?? ""],
+    (state) => state.selections.selectedVersionById[summaryId],
   );
   const setVersion = useBuilderStore((state) => state.setVersion);
 
-  if (!bank) return null;
+  if (!loaded) return null;
+  const bank = loaded.data;
 
   return (
     <section>

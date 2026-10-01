@@ -1,5 +1,4 @@
-import { BankScreen } from "@/features/bank/bank-screen";
-import { EmptyBank } from "@/features/bank/empty-bank";
+import { BankRoute } from "@/features/bank/bank-route";
 import { setupLocale } from "@/i18n/locale";
 import { requireUser } from "@/server/auth/session";
 import { loadBankForUser } from "@/server/bank/store";
@@ -16,7 +15,5 @@ export default async function BankPage({
   setupLocale(locale);
   const current = await requireUser();
   const bank = await loadBankForUser(db, current.user.id);
-
-  if (!bank) return <EmptyBank />;
-  return <BankScreen key={bank.updatedAt} initial={bank} />;
+  return <BankRoute initial={bank} />;
 }

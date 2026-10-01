@@ -11,6 +11,11 @@ import {
 } from "@/server/bank/store";
 import { db } from "@/server/db/client";
 
+export async function loadBankAction() {
+  const current = await requireUser();
+  return loadBankForUser(db, current.user.id);
+}
+
 export async function importBankAction(raw: string) {
   const current = await requireUser();
   let parsed: ReturnType<typeof parseResumeData>;
@@ -26,8 +31,11 @@ export async function importBankAction(raw: string) {
     return { ok: false as const };
   }
 
+  const loaded = await loadBankForUser(db, current.user.id);
+  if (!loaded) return { ok: false as const };
+
   revalidatePath("/", "layout");
-  return { ok: true as const };
+  return { ok: true as const, data: loaded.data, updatedAt: loaded.updatedAt };
 }
 
 export async function exportBankAction() {
@@ -61,6 +69,8 @@ export async function createEmptyBankAction() {
   const existing = await loadBankForUser(db, current.user.id);
   if (existing) return { ok: false as const };
   await replaceBankForUser(db, current.user.id, emptyResumeData());
+  const loaded = await loadBankForUser(db, current.user.id);
+  if (!loaded) return { ok: false as const };
   revalidatePath("/", "layout");
-  return { ok: true as const };
+  return { ok: true as const, data: loaded.data, updatedAt: loaded.updatedAt };
 }

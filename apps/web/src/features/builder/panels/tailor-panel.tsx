@@ -21,6 +21,8 @@ import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useRef, useState } from "react";
 
+import { useBankData } from "@/features/bank/bank-query";
+
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
 
@@ -79,7 +81,7 @@ export function TailorPanel({ hasApiKey }: { hasApiKey: boolean }) {
   const [hideJdMatch, setHideJdMatch] = useState(false);
   const abortRef = useRef<AbortController | null>(null);
   const requestId = useRef(0);
-  const bank = useBuilderStore((state) => state.bank);
+  const loaded = useBankData();
   const selections = useBuilderStore((state) => state.selections);
   const jdMatch = useBuilderStore((state) => state.jdMatch);
   const applyContentSelections = useBuilderStore(
@@ -98,7 +100,8 @@ export function TailorPanel({ hasApiKey }: { hasApiKey: boolean }) {
   };
 
   const handleApply = async () => {
-    if (!bank) return;
+    if (!loaded) return;
+    const bank = loaded.data;
     const id = ++requestId.current;
     abortRef.current?.abort();
     const controller = new AbortController();

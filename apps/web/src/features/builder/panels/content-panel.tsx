@@ -5,6 +5,8 @@ import { Input } from "@winnow/ui/components/input";
 import { Label } from "@winnow/ui/components/label";
 import { useTranslations } from "next-intl";
 
+import { useBankData } from "@/features/bank/bank-query";
+
 import { useBuilderStore } from "../store/builder-store";
 import { EntriesSection } from "./entries-section";
 import { PersonalFields } from "./personal-fields";
@@ -19,12 +21,19 @@ export function ContentPanel() {
   );
   const setTitle = useBuilderStore((state) => state.setTitle);
   const resetContent = useBuilderStore((state) => state.resetContent);
-  const bank = useBuilderStore((state) => state.bank);
+  const bank = useBankData();
 
   return (
     <div className="space-y-6">
       <div className="flex justify-end">
-        <Button type="button" variant="link" size="xs" onClick={resetContent}>
+        <Button
+          type="button"
+          variant="link"
+          size="xs"
+          onClick={() => {
+            if (bank) resetContent(bank.data);
+          }}
+        >
           {t("reset")}
         </Button>
       </div>
@@ -40,7 +49,7 @@ export function ContentPanel() {
           onChange={(event) => setTitle(event.target.value)}
         />
       </section>
-      {bank?.sections.map((section) => {
+      {bank?.data.sections.map((section) => {
         if (section.kind === "summary") {
           return <SummarySection key="summary" title={section.title} />;
         }

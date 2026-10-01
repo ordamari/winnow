@@ -1,26 +1,36 @@
 "use client";
 
+import { useQueryClient } from "@tanstack/react-query";
 import { Button } from "@winnow/ui/components/button";
 import { EmptyState } from "@winnow/ui/components/empty-state";
 import { PageHeader } from "@winnow/ui/components/page-header";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
+import { useBankUserId } from "@/components/query-provider";
 import { useRouter } from "@/i18n/navigation";
 import { createEmptyBankAction } from "@/server/bank/actions";
 
 import { BankMenu } from "./bank-menu";
+import { bankQueryKey } from "./bank-query";
 
 export function EmptyBank() {
   const t = useTranslations("bank");
   const router = useRouter();
+  const userId = useBankUserId();
+  const queryClient = useQueryClient();
   const [pending, setPending] = useState(false);
 
   async function start() {
     setPending(true);
     const result = await createEmptyBankAction();
     setPending(false);
-    if (result.ok) router.refresh();
+    if (!result.ok) return;
+    queryClient.setQueryData(bankQueryKey(userId), {
+      data: result.data,
+      updatedAt: result.updatedAt,
+    });
+    router.refresh();
   }
 
   return (
