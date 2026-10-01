@@ -21,7 +21,13 @@ import { exportBankAction } from "@/server/bank/actions";
 
 import { BankImport } from "./bank-import";
 
-export function BankMenu({ hasBank }: { hasBank: boolean }) {
+export function BankMenu({
+  hasBank,
+  onImportResume,
+}: {
+  hasBank: boolean;
+  onImportResume: () => void;
+}) {
   const t = useTranslations("bank");
   const [open, setOpen] = useState(false);
 
@@ -45,6 +51,9 @@ export function BankMenu({ hasBank }: { hasBank: boolean }) {
           {t("menu")}
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={onImportResume}>
+            {t("importResume")}
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={() => setOpen(true)}>
             {t("importJson")}
           </DropdownMenuItem>

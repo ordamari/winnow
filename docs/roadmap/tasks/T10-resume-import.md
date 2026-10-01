@@ -35,4 +35,6 @@ LinkedIn profile import (possible later via the extension).
 
 ## Decisions log
 
-_Fill in after planning._
+- **Text first.** `unpdf` extracts a text layer on the server. A PDF with no text layer returns an error so the user can paste. The PDF is not sent to a model and is not stored.
+- **Grouping.** The extraction call groups paraphrases as versions of one slot, including against bullets already in the bank. Exact duplicates are dropped in code after whitespace and bullet-character normalization. Embeddings stay in T24.
+- **Quota.** Import is free until T33. Caps: 3 files, 4 MB each, 8 pages total, 60,000 characters of text. A separate in-memory per-IP limit sits next to the tailor limiter. The call is named `resume-import`. No credit counter.

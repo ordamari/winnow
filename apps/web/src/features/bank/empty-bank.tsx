@@ -14,7 +14,7 @@ import { createEmptyBankAction } from "@/server/bank/actions";
 import { BankMenu } from "./bank-menu";
 import { bankQueryKey } from "./bank-query";
 
-export function EmptyBank() {
+export function EmptyBank({ onImport }: { onImport: () => void }) {
   const t = useTranslations("bank");
   const router = useRouter();
   const userId = useBankUserId();
@@ -38,15 +38,25 @@ export function EmptyBank() {
       <PageHeader
         title={t("title")}
         description={t("emptyDescription")}
-        actions={<BankMenu hasBank={false} />}
+        actions={<BankMenu hasBank={false} onImportResume={onImport} />}
       />
       <EmptyState
         title={t("emptyTitle")}
         description={t("emptyDescription")}
         action={
-          <Button type="button" disabled={pending} onClick={start}>
-            {pending ? t("starting") : t("startBlank")}
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button type="button" onClick={onImport}>
+              {t("importResume")}
+            </Button>
+            <Button
+              type="button"
+              variant="outline"
+              disabled={pending}
+              onClick={start}
+            >
+              {pending ? t("starting") : t("startBlank")}
+            </Button>
+          </div>
         }
       />
     </div>

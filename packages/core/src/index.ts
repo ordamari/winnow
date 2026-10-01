@@ -1,5 +1,30 @@
 export const productName = "Winnow";
 
+export type { ImportSlot } from "./import/draft";
+export { mergeBulletAsVersion, mergeResumeExtraction } from "./import/draft";
+export { importSlotCatalog } from "./import/draft";
+export type { ResumeExtraction } from "./import/schema";
+export {
+  RESUME_IMPORT_MODEL,
+  RESUME_IMPORT_TASK,
+  resumeExtractionSchema,
+} from "./import/schema";
+export type { ImportFlag } from "./import/verbatim";
+export {
+  alternativeTitleImportPath,
+  bulletImportPath,
+  categoryImportPath,
+  combineImportSource,
+  entryImportPath,
+  entryVersionImportPath,
+  importFlags,
+  normalizeImportText,
+  personalImportPath,
+  sectionTitleImportPath,
+  skillImportPath,
+  summaryImportPath,
+  textAppearsInSource,
+} from "./import/verbatim";
 export { emptyResumeData } from "./resume/empty";
 export {
   MARKDOWN_CHARS_PER_LINE,

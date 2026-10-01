@@ -1,8 +1,17 @@
 "use server";
 
-import { emptyResumeData, parseResumeData } from "@winnow/core";
+import {
+  combineImportSource,
+  emptyResumeData,
+  importFlags,
+  parseResumeData,
+} from "@winnow/core";
 import { revalidatePath } from "next/cache";
 
+import {
+  forgetImportSource,
+  readImportSource,
+} from "@/server/ai/import-source";
 import { requireUser } from "@/server/auth/session";
 import {
   loadBankForUser,
@@ -62,6 +71,58 @@ export async function saveBankAction(raw: unknown, expectedUpdatedAt: string) {
   );
   if (!result.ok) return { ok: false as const, conflict: true as const };
   return { ok: true as const, updatedAt: result.updatedAt };
+}
+
+export async function acceptResumeImportAction(
+  raw: unknown,
+  sourceText: string,
+  expectedUpdatedAt: string | null,
+) {
+  const current = await requireUser();
+  const stored = readImportSource(current.user.id);
+  if (!stored || stored !== sourceText) {
+    return { ok: false as const, reason: "expired" as const };
+  }
+
+  let parsed: ReturnType<typeof parseResumeData>;
+  try {
+    parsed = parseResumeData(raw);
+  } catch {
+    return { ok: false as const, reason: "invalid" as const };
+  }
+
+  const existing = await loadBankForUser(db, current.user.id);
+  const flags = importFlags(
+    combineImportSource(stored, existing?.data ?? null),
+    parsed,
+  );
+  if (flags.length > 0) {
+    return { ok: false as const, reason: "flagged" as const, flags };
+  }
+
+  try {
+    if (!existing) {
+      await replaceBankForUser(db, current.user.id, parsed);
+    } else if (!expectedUpdatedAt) {
+      return { ok: false as const, reason: "conflict" as const };
+    } else {
+      const saved = await saveBankForUser(
+        db,
+        current.user.id,
+        parsed,
+        expectedUpdatedAt,
+      );
+      if (!saved.ok) return { ok: false as const, reason: "conflict" as const };
+    }
+  } catch {
+    return { ok: false as const, reason: "invalid" as const };
+  }
+
+  forgetImportSource(current.user.id);
+  const loaded = await loadBankForUser(db, current.user.id);
+  if (!loaded) return { ok: false as const, reason: "invalid" as const };
+  revalidatePath("/", "layout");
+  return { ok: true as const, data: loaded.data, updatedAt: loaded.updatedAt };
 }
 
 export async function createEmptyBankAction() {

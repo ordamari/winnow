@@ -32,7 +32,7 @@ function activeSelection(
   return selection;
 }
 
-export function BankScreen() {
+export function BankScreen({ onImport }: { onImport: () => void }) {
   const t = useTranslations("bank");
   const bank = useBankData();
   const [selection, setSelection] = useState<EditorSelection>({
@@ -78,7 +78,7 @@ export function BankScreen() {
             <span className="text-xs text-muted-foreground" aria-live="polite">
               {statusLabel}
             </span>
-            <BankMenu hasBank />
+            <BankMenu hasBank onImportResume={onImport} />
           </>
         }
       />

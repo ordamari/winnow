@@ -7,10 +7,12 @@ import "server-only";
 
 const WINDOW_MS = 60_000;
 const MAX_REQUESTS = 8;
+const MAX_IMPORT_REQUESTS = 4;
 
 type Bucket = { windowStart: number; count: number };
 
 const buckets = new Map<string, Bucket>();
+const importBuckets = new Map<string, Bucket>();
 
 export function clientIp(headers: Headers): string {
   const forwarded = headers.get("x-forwarded-for");
@@ -24,16 +26,29 @@ export function clientIp(headers: Headers): string {
 }
 
 export function takeTailorSlot(ip: string, now = Date.now()): boolean {
-  for (const [key, bucket] of buckets) {
-    if (now - bucket.windowStart >= WINDOW_MS) buckets.delete(key);
+  return takeSlot(buckets, ip, MAX_REQUESTS, now);
+}
+
+export function takeResumeImportSlot(ip: string, now = Date.now()): boolean {
+  return takeSlot(importBuckets, ip, MAX_IMPORT_REQUESTS, now);
+}
+
+function takeSlot(
+  slots: Map<string, Bucket>,
+  ip: string,
+  max: number,
+  now: number,
+): boolean {
+  for (const [key, bucket] of slots) {
+    if (now - bucket.windowStart >= WINDOW_MS) slots.delete(key);
   }
 
-  const existing = buckets.get(ip);
+  const existing = slots.get(ip);
   if (!existing) {
-    buckets.set(ip, { windowStart: now, count: 1 });
+    slots.set(ip, { windowStart: now, count: 1 });
     return true;
   }
-  if (existing.count >= MAX_REQUESTS) return false;
+  if (existing.count >= max) return false;
   existing.count += 1;
   return true;
 }

@@ -8,6 +8,7 @@ const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@winnow/ui", "@winnow/core"],
+  serverExternalPackages: ["unpdf"],
 };
 
 export default withSentryConfig(withNextIntl(nextConfig), {
