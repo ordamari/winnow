@@ -1,6 +1,6 @@
 # T10: Onboarding: import an existing resume PDF into the bank
 
-**Phase:** 1 · **Depends on:** T09 · **Size:** M
+**Phase:** 1 · **Depends on:** T09.5 · **Size:** M
 
 ## Goal
 

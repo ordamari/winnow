@@ -1,7 +1,11 @@
-import { getTranslations } from "next-intl/server";
-
-import { PlaceholderPage } from "@/components/placeholder-page";
+import { BankScreen } from "@/features/bank/bank-screen";
+import { EmptyBank } from "@/features/bank/empty-bank";
 import { setupLocale } from "@/i18n/locale";
+import { requireUser } from "@/server/auth/session";
+import { loadBankForUser } from "@/server/bank/store";
+import { db } from "@/server/db/client";
+
+export const dynamic = "force-dynamic";
 
 export default async function BankPage({
   params,
@@ -10,6 +14,9 @@ export default async function BankPage({
 }) {
   const { locale } = await params;
   setupLocale(locale);
-  const t = await getTranslations("nav");
-  return <PlaceholderPage title={t("bank")} />;
+  const current = await requireUser();
+  const bank = await loadBankForUser(db, current.user.id);
+
+  if (!bank) return <EmptyBank />;
+  return <BankScreen key={bank.updatedAt} initial={bank} />;
 }

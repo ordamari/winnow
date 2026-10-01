@@ -43,37 +43,59 @@ export const skillCategoryViewSchema = skillCategorySchema.extend({
   skills: z.array(skillSchema),
 });
 
-export const experienceSchema = z.object({
+/** Printed headings for the standard summary and skills blocks. */
+export const SUMMARY_SECTION_TITLE = "Summary";
+export const SKILLS_SECTION_TITLE = "Skills";
+
+/** Stable ids used when a legacy resume is imported. */
+export const EXPERIENCE_SECTION_ID = "experience";
+export const EXPERIENCE_SECTION_TITLE = "Work Experience";
+export const HIGHLIGHTS_SECTION_ID = "highlights";
+export const HIGHLIGHTS_SECTION_TITLE = "Technical Highlights";
+export const EDUCATION_SECTION_ID = "education";
+export const EDUCATION_SECTION_TITLE = "Education";
+
+export const sectionEntrySchema = z.object({
   id: z.string(),
-  company: z.string(),
-  title: z.string(),
-  alternativeTitles: z.array(z.string()),
-  period: z.string(),
-  bullets: z.array(versionedTextSchema),
+  organization: z.string().optional(),
+  title: z.string().optional(),
+  alternativeTitles: z.array(z.string()).optional(),
+  period: z.string().optional(),
+  url: z.string().optional(),
+  defaultChecked: z.boolean().optional(),
+  versions: z.array(textVersionSchema).optional(),
+  bullets: z.array(versionedTextSchema).optional(),
 });
 
-export const renderedExperienceSchema = z.object({
-  id: z.string(),
-  company: z.string(),
+export const summarySectionSchema = z.object({
+  kind: z.literal("summary"),
   title: z.string(),
-  period: z.string(),
-  bullets: z.array(renderedTextSchema),
 });
 
-export const educationSchema = z.object({
-  institution: z.string(),
-  program: z.string(),
-  period: z.string(),
+export const skillsSectionSchema = z.object({
+  kind: z.literal("skills"),
+  title: z.string(),
 });
+
+export const entriesSectionSchema = z.object({
+  kind: z.literal("entries"),
+  id: z.string(),
+  title: z.string(),
+  entries: z.array(sectionEntrySchema),
+});
+
+export const resumeSectionSchema = z.discriminatedUnion("kind", [
+  summarySectionSchema,
+  skillsSectionSchema,
+  entriesSectionSchema,
+]);
 
 export const resumeDataSchema = z.object({
   personalInfo: personalInfoSchema,
   summary: versionedTextSchema,
   skills: z.array(skillSchema),
   skillCategories: z.array(skillCategorySchema),
-  experience: z.array(experienceSchema),
-  technicalHighlights: z.array(versionedTextSchema),
-  education: educationSchema,
+  sections: z.array(resumeSectionSchema),
 });
 
 export const resumeSelectionsSchema = z.object({
@@ -114,9 +136,8 @@ export type RenderedText = z.infer<typeof renderedTextSchema>;
 export type Skill = z.infer<typeof skillSchema>;
 export type SkillCategory = z.infer<typeof skillCategorySchema>;
 export type SkillCategoryView = z.infer<typeof skillCategoryViewSchema>;
-export type Experience = z.infer<typeof experienceSchema>;
-export type RenderedExperience = z.infer<typeof renderedExperienceSchema>;
-export type Education = z.infer<typeof educationSchema>;
+export type SectionEntry = z.infer<typeof sectionEntrySchema>;
+export type ResumeSection = z.infer<typeof resumeSectionSchema>;
 export type ResumeData = z.infer<typeof resumeDataSchema>;
 export type ResumeSelections = z.infer<typeof resumeSelectionsSchema>;
 export type ResumeStyle = z.infer<typeof resumeStyleSchema>;
@@ -137,10 +158,6 @@ export const DEFAULT_STYLE: ResumeStyle = {
   bulletIndent: 8,
   showSectionBorders: true,
 };
-
-export function parseResumeData(input: unknown): ResumeData {
-  return resumeDataSchema.parse(input);
-}
 
 export function defaultVersionId(slot: VersionedText): string {
   const selected = slot.versions.find((version) => version.defaultSelected);

@@ -1,16 +1,40 @@
 export const productName = "Winnow";
 
-export type { RenderedResume } from "./resume/render";
+export { emptyResumeData } from "./resume/empty";
+export {
+  MARKDOWN_CHARS_PER_LINE,
+  markdownLineHint,
+  markdownPlainText,
+  type MarkdownRun,
+  markdownRuns,
+  safeMarkdownUrl,
+} from "./resume/markdown";
+export {
+  exportResumeData,
+  parseResumeData,
+  summarizeResume,
+} from "./resume/normalize";
+export {
+  formatPeriod,
+  type ParsedPeriod,
+  parsePeriod,
+  PERIOD_MONTHS,
+  type PeriodMonth,
+} from "./resume/period";
+export type {
+  RenderedEntry,
+  RenderedResume,
+  RenderedSection,
+} from "./resume/render";
 export { buildInitialSelections, renderResume } from "./resume/render";
 export type {
-  Education,
-  Experience,
   PersonalInfo,
-  RenderedExperience,
   RenderedText,
   ResumeData,
+  ResumeSection,
   ResumeSelections,
   ResumeStyle,
+  SectionEntry,
   Skill,
   SkillCategory,
   SkillCategoryView,
@@ -20,20 +44,26 @@ export type {
 export {
   DEFAULT_STYLE,
   defaultVersionId,
-  educationSchema,
-  experienceSchema,
+  EDUCATION_SECTION_ID,
+  EDUCATION_SECTION_TITLE,
+  EXPERIENCE_SECTION_ID,
+  EXPERIENCE_SECTION_TITLE,
   fontFamilySchema,
-  parseResumeData,
+  HIGHLIGHTS_SECTION_ID,
+  HIGHLIGHTS_SECTION_TITLE,
   personalInfoSchema,
-  renderedExperienceSchema,
   renderedTextSchema,
   resumeDataSchema,
+  resumeSectionSchema,
   resumeSelectionsSchema,
   resumeStyleSchema,
+  sectionEntrySchema,
   selectedVersion,
   skillCategorySchema,
   skillCategoryViewSchema,
+  SKILLS_SECTION_TITLE,
   skillSchema,
+  SUMMARY_SECTION_TITLE,
   textVersionSchema,
   versionedTextSchema,
 } from "./resume/schema";

@@ -50,14 +50,15 @@ Size: **S** ≈ 1–2 days, **M** ≈ 3–5 days, **L** ≈ 1–2 weeks (solo, p
 
 ### Phase 1: Accounts & bullet bank
 
-| ✓   | ID                                      | Task                                                    | Depends on | Size |
-| --- | --------------------------------------- | ------------------------------------------------------- | ---------- | ---- |
-| ☑   | [T06](./tasks/T06-database.md)          | Database, ORM & migrations (Postgres + pgvector)        | T01        | S    |
-| ☑   | [T07](./tasks/T07-auth.md)              | Authentication & user accounts                          | T06        | M    |
-| ☐   | [T08](./tasks/T08-bank-data-model.md)   | Bullet bank data model & JSON import                    | T06, T07   | M    |
-| ☐   | [T09](./tasks/T09-bank-manager-ui.md)   | Bullet Bank Manager UI                                  | T08, T02   | L    |
-| ☐   | [T10](./tasks/T10-resume-import.md)     | Onboarding: import an existing resume PDF into the bank | T09        | M    |
-| ☐   | [T11](./tasks/T11-style-presets-fit.md) | Style presets & one-page fit assistant                  | T03, T08   | M    |
+| ✓   | ID                                         | Task                                                    | Depends on | Size |
+| --- | ------------------------------------------ | ------------------------------------------------------- | ---------- | ---- |
+| ☑   | [T06](./tasks/T06-database.md)             | Database, ORM & migrations (Postgres + pgvector)        | T01        | S    |
+| ☑   | [T07](./tasks/T07-auth.md)                 | Authentication & user accounts                          | T06        | M    |
+| ☑   | [T08](./tasks/T08-bank-data-model.md)      | Bullet bank data model & JSON import                    | T06, T07   | M    |
+| ☐   | [T09](./tasks/T09-bank-manager-ui.md)      | Bullet Bank Manager UI                                  | T08, T02   | L    |
+| ☐   | [T09.5](./tasks/T09.5-bank-query-state.md) | Bank server state in TanStack Query                     | T09        | M    |
+| ☐   | [T10](./tasks/T10-resume-import.md)        | Onboarding: import an existing resume PDF into the bank | T09.5      | M    |
+| ☐   | [T11](./tasks/T11-style-presets-fit.md)    | Style presets & one-page fit assistant                  | T03, T08   | M    |
 
 ### Phase 2: Personal job CRM
 
@@ -132,7 +133,7 @@ Size: **S** ≈ 1–2 days, **M** ≈ 3–5 days, **L** ≈ 1–2 weeks (solo, p
 flowchart LR
   T01 --> T02 --> T03 --> T04
   T01 --> T05
-  T01 --> T06 --> T07 --> T08 --> T09 --> T10
+  T01 --> T06 --> T07 --> T08 --> T09 --> T09.5 --> T10
   T08 --> T12 --> T13 --> T14
   T12 --> T15 --> T16
   T15 --> T18

@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { resumeDataSchema } from "@winnow/core";
+import { parseResumeData } from "@winnow/core";
 
 const examplePath = join(
   dirname(fileURLToPath(import.meta.url)),
@@ -11,5 +11,5 @@ const examplePath = join(
 
 export function readExampleResume() {
   const raw: unknown = JSON.parse(readFileSync(examplePath, "utf8"));
-  return resumeDataSchema.parse(raw);
+  return parseResumeData(raw);
 }

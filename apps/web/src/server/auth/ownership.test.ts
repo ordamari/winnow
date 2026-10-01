@@ -4,8 +4,7 @@ import { eq } from "drizzle-orm";
 import { describe, expect, it } from "vitest";
 
 import { createDb, databaseUrl } from "../db/connection";
-import { readExampleResume } from "../db/example-resume";
-import { demoResumes, user } from "../db/schema";
+import { banks, user } from "../db/schema";
 import { assertOwner, ownedBy, OwnershipError } from "./ownership";
 
 const databaseReady = Boolean(process.env.DATABASE_URL);
@@ -25,9 +24,8 @@ describe.skipIf(!databaseReady)("ownedBy", () => {
     const { sql, db } = createDb(databaseUrl("direct"));
     const userA = randomUUID();
     const userB = randomUUID();
-    const resumeA = randomUUID();
-    const resumeB = randomUUID();
-    const payload = readExampleResume();
+    const bankA = randomUUID();
+    const bankB = randomUUID();
 
     try {
       await db.insert(user).values([
@@ -44,30 +42,18 @@ describe.skipIf(!databaseReady)("ownedBy", () => {
           emailVerified: true,
         },
       ]);
-      await db.insert(demoResumes).values([
-        {
-          id: resumeA,
-          userId: userA,
-          label: "A",
-          payload,
-        },
-        {
-          id: resumeB,
-          userId: userB,
-          label: "B",
-          payload,
-        },
+      await db.insert(banks).values([
+        { id: bankA, userId: userA },
+        { id: bankB, userId: userB },
       ]);
 
       const visible = await db
-        .select({ id: demoResumes.id })
-        .from(demoResumes)
-        .where(ownedBy(demoResumes.userId, demoResumes.deletedAt, userA));
+        .select({ id: banks.id })
+        .from(banks)
+        .where(ownedBy(banks.userId, banks.deletedAt, userA));
 
-      expect(visible.map((row) => row.id)).toEqual([resumeA]);
+      expect(visible.map((row) => row.id)).toEqual([bankA]);
     } finally {
-      await db.delete(demoResumes).where(eq(demoResumes.id, resumeA));
-      await db.delete(demoResumes).where(eq(demoResumes.id, resumeB));
       await db.delete(user).where(eq(user.id, userA));
       await db.delete(user).where(eq(user.id, userB));
       await sql.end();

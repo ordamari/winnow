@@ -18,7 +18,7 @@ import { SectionHeading } from "./section-heading";
 
 const unassignedValue = "__none__";
 
-export function SkillsEditor() {
+export function SkillsEditor({ title }: { title: string }) {
   const t = useTranslations("builder");
   const [newCategory, setNewCategory] = useState("");
   const selections = useBuilderStore((state) => state.selections);
@@ -37,7 +37,7 @@ export function SkillsEditor() {
 
   return (
     <section>
-      <SectionHeading>{t("skillCategories")}</SectionHeading>
+      <SectionHeading>{title}</SectionHeading>
       <div className="mb-3 space-y-1.5">
         {selections.categoryList.map((category) => (
           <div key={category.id} className="flex items-center gap-1">

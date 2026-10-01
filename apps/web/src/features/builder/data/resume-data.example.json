@@ -30,28 +30,6 @@
       }
     ]
   },
-  "skillCategories": [
-    {
-      "id": "core",
-      "label": "Core"
-    },
-    {
-      "id": "state-ui",
-      "label": "State & UI"
-    },
-    {
-      "id": "arch-tooling",
-      "label": "Architecture & Tooling"
-    },
-    {
-      "id": "backend",
-      "label": "Backend"
-    },
-    {
-      "id": "other",
-      "label": "Other"
-    }
-  ],
   "skills": [
     {
       "id": "react",
@@ -222,64 +200,207 @@
       "defaultCategoryId": "other"
     }
   ],
-  "experience": [
+  "skillCategories": [
     {
-      "id": "northwind",
-      "company": "Northwind Labs",
-      "title": "Frontend Developer",
-      "alternativeTitles": ["Software Engineer", "Frontend Engineer"],
-      "period": "MAR 2024 - PRESENT",
-      "bullets": [
+      "id": "core",
+      "label": "Core"
+    },
+    {
+      "id": "state-ui",
+      "label": "State & UI"
+    },
+    {
+      "id": "arch-tooling",
+      "label": "Architecture & Tooling"
+    },
+    {
+      "id": "backend",
+      "label": "Backend"
+    },
+    {
+      "id": "other",
+      "label": "Other"
+    }
+  ],
+  "sections": [
+    {
+      "kind": "summary",
+      "title": "Summary"
+    },
+    {
+      "kind": "entries",
+      "id": "experience",
+      "title": "Work Experience",
+      "entries": [
         {
-          "id": "nw-dashboard",
+          "id": "northwind",
+          "organization": "Northwind Labs",
+          "title": "Frontend Developer",
+          "alternativeTitles": ["Software Engineer", "Frontend Engineer"],
+          "period": "MAR 2024 - PRESENT",
+          "bullets": [
+            {
+              "id": "nw-dashboard",
+              "defaultChecked": true,
+              "versions": [
+                {
+                  "id": "nw-dashboard-developer",
+                  "label": "Developer",
+                  "text": "Owned frontend delivery for an analytics dashboard serving **50+ internal teams**, shipping **React** and **TypeScript** features on a quarterly release cadence.",
+                  "defaultSelected": true
+                },
+                {
+                  "id": "nw-dashboard-builder",
+                  "label": "Builder",
+                  "text": "Took an analytics dashboard from requirements to release for **50+ internal teams**, coordinating scope, delivery, and adoption on a quarterly cadence.",
+                  "defaultSelected": false
+                }
+              ]
+            },
+            {
+              "id": "nw-graphql",
+              "defaultChecked": true,
+              "versions": [
+                {
+                  "id": "nw-graphql-default",
+                  "label": "Default",
+                  "text": "Designed reusable **GraphQL** queries and cache policies so new entity views plugged into the shared UI without custom data-fetching code.",
+                  "defaultSelected": true
+                }
+              ]
+            },
+            {
+              "id": "nw-playwright",
+              "defaultChecked": true,
+              "versions": [
+                {
+                  "id": "nw-playwright-default",
+                  "label": "Default",
+                  "text": "Expanded **Playwright** coverage across critical flows, cutting flaky failures and stabilizing the PR pipeline for the frontend monorepo.",
+                  "defaultSelected": true
+                }
+              ]
+            },
+            {
+              "id": "nw-design-system",
+              "defaultChecked": false,
+              "versions": [
+                {
+                  "id": "nw-design-system-default",
+                  "label": "Default",
+                  "text": "Contributed components to a shared **design system** with **Storybook** docs used by three product squads.",
+                  "defaultSelected": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "harbor",
+          "organization": "Harbor Digital",
+          "title": "Full Stack Developer",
+          "alternativeTitles": ["Frontend Developer", "Software Engineer"],
+          "period": "JUN 2022 - FEB 2024",
+          "bullets": [
+            {
+              "id": "hb-mfe",
+              "defaultChecked": true,
+              "versions": [
+                {
+                  "id": "hb-mfe-default",
+                  "label": "Default",
+                  "text": "Helped introduce **Vite Module Federation** so legacy shells could load modern React modules at runtime without a full rewrite.",
+                  "defaultSelected": true
+                }
+              ]
+            },
+            {
+              "id": "hb-forms",
+              "defaultChecked": true,
+              "versions": [
+                {
+                  "id": "hb-forms-default",
+                  "label": "Default",
+                  "text": "Built a multi-step intake flow spanning client and **NestJS** BFF layers with **OpenAPI**-generated type-safe routes.",
+                  "defaultSelected": true
+                }
+              ]
+            },
+            {
+              "id": "hb-ts",
+              "defaultChecked": true,
+              "versions": [
+                {
+                  "id": "hb-ts-default",
+                  "label": "Default",
+                  "text": "Led adoption of **TypeScript** and production error tracking, improving triage speed on client-facing apps.",
+                  "defaultSelected": true
+                }
+              ]
+            },
+            {
+              "id": "hb-next",
+              "defaultChecked": false,
+              "versions": [
+                {
+                  "id": "hb-next-default",
+                  "label": "Default",
+                  "text": "Shipped a white-label **Next.js** booking site with server-rendered themes per customer brand.",
+                  "defaultSelected": true
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "kind": "skills",
+      "title": "Skills"
+    },
+    {
+      "kind": "entries",
+      "id": "highlights",
+      "title": "Technical Highlights",
+      "entries": [
+        {
+          "id": "th-portfolio",
           "defaultChecked": true,
           "versions": [
             {
-              "id": "nw-dashboard-developer",
+              "id": "th-portfolio-default",
+              "label": "Default",
+              "text": "Built an interactive portfolio with **react-three-fiber** and motion libraries — 3D scenes, orbit camera controls, and scroll-driven transitions.",
+              "defaultSelected": true
+            }
+          ]
+        },
+        {
+          "id": "th-ai",
+          "defaultChecked": true,
+          "versions": [
+            {
+              "id": "th-ai-developer",
               "label": "Developer",
-              "text": "Owned frontend delivery for an analytics dashboard serving **50+ internal teams**, shipping **React** and **TypeScript** features on a quarterly release cadence.",
+              "text": "Prototyped LLM-assisted tools with **OpenAI Structured Outputs** to generate dynamic form UIs from natural-language prompts.",
               "defaultSelected": true
             },
             {
-              "id": "nw-dashboard-builder",
+              "id": "th-ai-builder",
               "label": "Builder",
-              "text": "Took an analytics dashboard from requirements to release for **50+ internal teams**, coordinating scope, delivery, and adoption on a quarterly cadence.",
+              "text": "Turned natural-language prompts into working form UIs, using **OpenAI Structured Outputs** to take LLM-assisted tools from idea to prototype.",
               "defaultSelected": false
             }
           ]
         },
         {
-          "id": "nw-graphql",
-          "defaultChecked": true,
-          "versions": [
-            {
-              "id": "nw-graphql-default",
-              "label": "Default",
-              "text": "Designed reusable **GraphQL** queries and cache policies so new entity views plugged into the shared UI without custom data-fetching code.",
-              "defaultSelected": true
-            }
-          ]
-        },
-        {
-          "id": "nw-playwright",
-          "defaultChecked": true,
-          "versions": [
-            {
-              "id": "nw-playwright-default",
-              "label": "Default",
-              "text": "Expanded **Playwright** coverage across critical flows, cutting flaky failures and stabilizing the PR pipeline for the frontend monorepo.",
-              "defaultSelected": true
-            }
-          ]
-        },
-        {
-          "id": "nw-design-system",
+          "id": "th-gha",
           "defaultChecked": false,
           "versions": [
             {
-              "id": "nw-design-system-default",
+              "id": "th-gha-default",
               "label": "Default",
-              "text": "Contributed components to a shared **design system** with **Storybook** docs used by three product squads.",
+              "text": "Set up **GitHub Actions** CI with lint, type-check, and cached installs across personal projects.",
               "defaultSelected": true
             }
           ]
@@ -287,110 +408,17 @@
       ]
     },
     {
-      "id": "harbor",
-      "company": "Harbor Digital",
-      "title": "Full Stack Developer",
-      "alternativeTitles": ["Frontend Developer", "Software Engineer"],
-      "period": "JUN 2022 - FEB 2024",
-      "bullets": [
+      "kind": "entries",
+      "id": "education",
+      "title": "Education",
+      "entries": [
         {
-          "id": "hb-mfe",
-          "defaultChecked": true,
-          "versions": [
-            {
-              "id": "hb-mfe-default",
-              "label": "Default",
-              "text": "Helped introduce **Vite Module Federation** so legacy shells could load modern React modules at runtime without a full rewrite.",
-              "defaultSelected": true
-            }
-          ]
-        },
-        {
-          "id": "hb-forms",
-          "defaultChecked": true,
-          "versions": [
-            {
-              "id": "hb-forms-default",
-              "label": "Default",
-              "text": "Built a multi-step intake flow spanning client and **NestJS** BFF layers with **OpenAPI**-generated type-safe routes.",
-              "defaultSelected": true
-            }
-          ]
-        },
-        {
-          "id": "hb-ts",
-          "defaultChecked": true,
-          "versions": [
-            {
-              "id": "hb-ts-default",
-              "label": "Default",
-              "text": "Led adoption of **TypeScript** and production error tracking, improving triage speed on client-facing apps.",
-              "defaultSelected": true
-            }
-          ]
-        },
-        {
-          "id": "hb-next",
-          "defaultChecked": false,
-          "versions": [
-            {
-              "id": "hb-next-default",
-              "label": "Default",
-              "text": "Shipped a white-label **Next.js** booking site with server-rendered themes per customer brand.",
-              "defaultSelected": true
-            }
-          ]
+          "id": "education",
+          "organization": "Demo Tech Institute",
+          "title": "Full-Stack Development Bootcamp",
+          "period": "JAN 2022 - APR 2022"
         }
       ]
     }
-  ],
-  "technicalHighlights": [
-    {
-      "id": "th-portfolio",
-      "defaultChecked": true,
-      "versions": [
-        {
-          "id": "th-portfolio-default",
-          "label": "Default",
-          "text": "Built an interactive portfolio with **react-three-fiber** and motion libraries — 3D scenes, orbit camera controls, and scroll-driven transitions.",
-          "defaultSelected": true
-        }
-      ]
-    },
-    {
-      "id": "th-ai",
-      "defaultChecked": true,
-      "versions": [
-        {
-          "id": "th-ai-developer",
-          "label": "Developer",
-          "text": "Prototyped LLM-assisted tools with **OpenAI Structured Outputs** to generate dynamic form UIs from natural-language prompts.",
-          "defaultSelected": true
-        },
-        {
-          "id": "th-ai-builder",
-          "label": "Builder",
-          "text": "Turned natural-language prompts into working form UIs, using **OpenAI Structured Outputs** to take LLM-assisted tools from idea to prototype.",
-          "defaultSelected": false
-        }
-      ]
-    },
-    {
-      "id": "th-gha",
-      "defaultChecked": false,
-      "versions": [
-        {
-          "id": "th-gha-default",
-          "label": "Default",
-          "text": "Set up **GitHub Actions** CI with lint, type-check, and cached installs across personal projects.",
-          "defaultSelected": true
-        }
-      ]
-    }
-  ],
-  "education": {
-    "institution": "Demo Tech Institute",
-    "program": "Full-Stack Development Bootcamp",
-    "period": "JAN 2022 - APR 2022"
-  }
+  ]
 }

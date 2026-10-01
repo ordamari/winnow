@@ -1,13 +1,12 @@
 "use client";
 
+import { markdownPlainText } from "@winnow/core";
 import { cn } from "cn";
-import { useTranslations } from "next-intl";
 
 import { useBuilderStore } from "../store/builder-store";
 import { SectionHeading } from "./section-heading";
 
-export function SummarySection() {
-  const t = useTranslations("builder");
+export function SummarySection({ title }: { title: string }) {
   const bank = useBuilderStore((state) => state.bank);
   const selectedId = useBuilderStore(
     (state) =>
@@ -19,7 +18,7 @@ export function SummarySection() {
 
   return (
     <section>
-      <SectionHeading>{t("summary")}</SectionHeading>
+      <SectionHeading>{title}</SectionHeading>
       <div className="space-y-2">
         {bank.summary.versions.map((version) => {
           const selected = selectedId === version.id;
@@ -45,7 +44,7 @@ export function SummarySection() {
                   {version.label}
                 </span>
                 <span className="text-xs leading-tight text-muted-foreground">
-                  {version.text.replace(/\*\*/g, "")}
+                  {markdownPlainText(version.text)}
                 </span>
               </span>
             </label>

@@ -13,11 +13,12 @@ import {
 } from "@react-pdf/renderer";
 import {
   DEFAULT_STYLE,
-  type Education,
+  type MarkdownRun,
+  markdownRuns,
   type PersonalInfo,
-  type RenderedExperience,
-  type RenderedText,
+  type RenderedSection,
   type ResumeStyle,
+  safeMarkdownUrl,
   type SkillCategoryView,
   type TextVersion,
 } from "@winnow/core";
@@ -148,6 +149,22 @@ function buildStyles(t: ResumeStyle) {
     bold: {
       fontWeight: 700,
     },
+    italic: {
+      fontStyle: "italic" as const,
+    },
+    inlineCode: {
+      fontFamily: "Courier",
+    },
+    inlineLink: {
+      color: t.accentColor,
+      textDecoration: "underline" as const,
+    },
+    entryLink: {
+      fontSize: t.bodyFontSize,
+      color: t.accentColor,
+      textDecoration: "underline" as const,
+      marginBottom: 3,
+    },
   });
 }
 
@@ -231,18 +248,63 @@ function GitHubIcon({ color }: { color: string }) {
   );
 }
 
-function parseBoldText(text: string, boldStyle: { fontWeight: number }) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
-  return parts.map((part, i) => {
-    if (part.startsWith("**") && part.endsWith("**")) {
+function MarkdownRuns({
+  runs,
+  styles,
+}: {
+  runs: MarkdownRun[];
+  styles: {
+    bold: { fontWeight: number };
+    italic: { fontStyle: "italic" };
+    inlineCode: { fontFamily: string };
+    inlineLink: { color: string; textDecoration: "underline" };
+  };
+}) {
+  return runs.map((run, index) => {
+    if (run.type === "text") return <Text key={index}>{run.value}</Text>;
+    if (run.type === "break") return <Text key={index}>{"\n"}</Text>;
+    if (run.type === "code") {
       return (
-        <Text key={i} style={boldStyle}>
-          {part.slice(2, -2)}
+        <Text key={index} style={styles.inlineCode}>
+          {run.value}
         </Text>
       );
     }
-    return <Text key={i}>{part}</Text>;
+    if (run.type === "bold") {
+      return (
+        <Text key={index} style={styles.bold}>
+          <MarkdownRuns runs={run.children} styles={styles} />
+        </Text>
+      );
+    }
+    if (run.type === "italic") {
+      return (
+        <Text key={index} style={styles.italic}>
+          <MarkdownRuns runs={run.children} styles={styles} />
+        </Text>
+      );
+    }
+    return (
+      <Link key={index} src={run.url} style={styles.inlineLink}>
+        <MarkdownRuns runs={run.children} styles={styles} />
+      </Link>
+    );
   });
+}
+
+function MarkdownText({
+  text,
+  styles,
+}: {
+  text: string;
+  styles: {
+    bold: { fontWeight: number };
+    italic: { fontStyle: "italic" };
+    inlineCode: { fontFamily: string };
+    inlineLink: { color: string; textDecoration: "underline" };
+  };
+}) {
+  return <MarkdownRuns runs={markdownRuns(text)} styles={styles} />;
 }
 
 export interface ResumePDFProps {
@@ -250,9 +312,7 @@ export interface ResumePDFProps {
   title: string;
   summary: TextVersion | undefined;
   skillCategories: SkillCategoryView[];
-  experience: RenderedExperience[];
-  technicalHighlights: RenderedText[];
-  education: Education;
+  sections: RenderedSection[];
   styleOverrides?: ResumeStyle;
 }
 
@@ -261,9 +321,7 @@ export function ResumePDF({
   title,
   summary,
   skillCategories,
-  experience,
-  technicalHighlights,
-  education,
+  sections,
   styleOverrides,
 }: ResumePDFProps) {
   const theme = styleOverrides ?? DEFAULT_STYLE;
@@ -316,69 +374,76 @@ export function ResumePDF({
           </View>
         </View>
 
-        {/* Summary */}
-        {summary && (
-          <>
-            <Text style={s.sectionHeader}>Summary</Text>
-            <View style={s.summaryWrap}>
-              <Text style={s.summaryText}>
-                {parseBoldText(summary.text, s.bold)}
-              </Text>
+        {sections.map((section) => {
+          if (section.kind === "summary") {
+            if (!summary) return null;
+            return (
+              <View key={section.id}>
+                <Text style={s.sectionHeader}>{section.title}</Text>
+                <View style={s.summaryWrap}>
+                  <Text style={s.summaryText}>
+                    <MarkdownText text={summary.text} styles={s} />
+                  </Text>
+                </View>
+              </View>
+            );
+          }
+
+          if (section.kind === "skills") {
+            return (
+              <View key={section.id}>
+                <Text style={s.sectionHeader}>{section.title}</Text>
+                {skillCategories.map((cat) => (
+                  <View key={cat.id} style={s.skillRow}>
+                    <Text style={s.skillText}>
+                      <Text style={s.skillLabel}>{cat.label}: </Text>
+                      {cat.skills.map((sk) => sk.name).join(", ")}
+                    </Text>
+                  </View>
+                ))}
+              </View>
+            );
+          }
+
+          return (
+            <View key={section.id}>
+              <Text style={s.sectionHeader}>{section.title}</Text>
+              {section.entries.map((entry) => {
+                const role = [entry.title, entry.period]
+                  .filter((part) => part && part.length > 0)
+                  .join(" • ");
+                return (
+                  <View key={entry.id}>
+                    {entry.organization ? (
+                      <Text style={s.companyName}>{entry.organization}</Text>
+                    ) : null}
+                    {role ? <Text style={s.roleLine}>{role}</Text> : null}
+                    {entry.url ? (
+                      safeMarkdownUrl(entry.url) ? (
+                        <Link
+                          src={safeMarkdownUrl(entry.url) ?? entry.url}
+                          style={s.entryLink}
+                        >
+                          {entry.url}
+                        </Link>
+                      ) : (
+                        <Text style={s.roleLine}>{entry.url}</Text>
+                      )
+                    ) : null}
+                    {entry.bullets.map((bullet) => (
+                      <View key={bullet.id} style={s.bulletRow}>
+                        <Text style={s.bulletDot}>•</Text>
+                        <Text style={s.bulletText}>
+                          <MarkdownText text={bullet.text} styles={s} />
+                        </Text>
+                      </View>
+                    ))}
+                  </View>
+                );
+              })}
             </View>
-          </>
-        )}
-
-        {/* Work Experience */}
-        <Text style={s.sectionHeader}>Work Experience</Text>
-        {experience.map((exp) => (
-          <View key={exp.id}>
-            <Text style={s.companyName}>{exp.company}</Text>
-            <Text style={s.roleLine}>
-              {exp.title} • {exp.period}
-            </Text>
-            {exp.bullets.map((bullet) => (
-              <View key={bullet.id} style={s.bulletRow}>
-                <Text style={s.bulletDot}>•</Text>
-                <Text style={s.bulletText}>
-                  {parseBoldText(bullet.text, s.bold)}
-                </Text>
-              </View>
-            ))}
-          </View>
-        ))}
-
-        {/* Skills */}
-        <Text style={s.sectionHeader}>Skills</Text>
-        {skillCategories.map((cat) => (
-          <View key={cat.id} style={s.skillRow}>
-            <Text style={s.skillText}>
-              <Text style={s.skillLabel}>{cat.label}: </Text>
-              {cat.skills.map((sk) => sk.name).join(", ")}
-            </Text>
-          </View>
-        ))}
-
-        {/* Technical Highlights */}
-        {technicalHighlights.length > 0 && (
-          <>
-            <Text style={s.sectionHeader}>Technical Highlights</Text>
-            {technicalHighlights.map((h) => (
-              <View key={h.id} style={s.bulletRow}>
-                <Text style={s.bulletDot}>•</Text>
-                <Text style={s.bulletText}>
-                  {parseBoldText(h.text, s.bold)}
-                </Text>
-              </View>
-            ))}
-          </>
-        )}
-
-        {/* Education */}
-        <Text style={s.sectionHeader}>Education</Text>
-        <Text style={s.eduInstitution}>{education.institution}</Text>
-        <Text style={s.eduProgram}>
-          {education.program} • {education.period}
-        </Text>
+          );
+        })}
       </Page>
     </Document>
   );
